@@ -1,25 +1,33 @@
-import logo from './logo.svg';
-import './App.css';
+
+import './styles/App.css';
+import 'bootstrap/dist/css/bootstrap.css'
+import {Route, Routes, Navigate} from "react-router-dom"
+import Dashboard from './pages/Dashboard';
+import Login from './pages/Login'
+import Register from './pages/Register'
+
+function RequireAuth({children, redirectTo}) {
+  const isAuthenticated = false;
+  return isAuthenticated ? children : <Navigate to={redirectTo} />
+}
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+
+
+  return ( 
+      <Routes>
+        <Route path="/" element={
+          <RequireAuth redirectTo="/login">
+            <Dashboard />
+          </RequireAuth>
+        } /> 
+        <Route path='/login' element={<Login />} />
+        <Route path='/register' element={<Register />} />
+      </Routes>
   );
 }
 
 export default App;
+
+
+
