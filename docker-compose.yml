@@ -1,6 +1,15 @@
-version: '3'
-
 services:
+  db:
+    container_name: postgres
+    image: postgres:17
+    ports:
+      - '5432:5432'
+    volumes:
+      - postgres:/var/lib/postgresql/data/
+    env_file:
+      - ./postgres/.env
+    restart: unless-stopped
+
   frontend:
     container_name: frontend
     image: frontend:custom
@@ -10,7 +19,6 @@ services:
     depends_on:
       - backend
 
-
   backend:
     container_name: backend
     image: backend:custom
@@ -18,4 +26,7 @@ services:
     restart: unless-stopped
     ports:
       - '8000:8000'
+
+volumes:
+  postgres:
       
