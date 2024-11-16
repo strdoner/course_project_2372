@@ -19,16 +19,18 @@ function App() {
 
 
   const [user, setUser] = useState(null);
-  const [accessToken, setAccessToken] = useState(refreshToken().access)
   const isUserLoggedIn = () => {
-    console.log(accessToken !== null)
-    return accessToken !== null;
+    if (window.localStorage.getItem("access_token") === null) {
+      return refreshToken()
+    }
+    
+    return true
   }
 
   
 
   return ( 
-      <UserContext.Provider value={{user, setUser, isUserLoggedIn, accessToken, setAccessToken}}>
+      <UserContext.Provider value={{user, setUser, isUserLoggedIn}}>
         <Routes>
           <Route path="/" element={
             <RequireAuth redirectTo="/login" isAuthenticated={isUserLoggedIn()}>

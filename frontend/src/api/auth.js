@@ -17,24 +17,42 @@ const loginUser = (username, password) => {
     return tokenRequest.post("/api/token/", requestBody)
         .then((response)=> {
             
-            // window.localStorage.setItem('access_token', response.data.access)
+            window.localStorage.setItem('access_token', response.data.access)
             return Promise.resolve(response.data);
-        }).catch((error) => {
-            return Promise.reject(error)
+        }).catch((er) => {
+            return Promise.reject(er)
         })
 }
 
 const logoutUser = () => {
-    // window.localStorage.removeItem('access_token');
-}
-
-const refreshToken = () => {
-    return tokenRequest.post("/api/token/refresh/")
+    tokenRequest.post("api/logout/")
         .then((response) => {
+            window.localStorage.removeItem('access_token');
             return Promise.resolve(response.data);
-        }).catch((error) => {
-            console.log(error)
+        }).catch((er) => {
+            console.log(er)
+            return Promise.reject(er)
         })
 }
 
-export {loginUser, logoutUser, refreshToken}
+const refreshToken = () => {
+    tokenRequest.post("/api/token/refresh/")
+        .then((response) => {
+            window.localStorage.setItem('access_token', response.data.access)
+            return true
+        }).catch((er) => {
+            return false
+        })
+}
+
+const registerUser = (username, email, password, password2) => {
+    const requestBody = {username:username, email:email, password:password, password2:password2}
+    return tokenRequest.post("/api/register/", requestBody)
+        .then((response) => {
+            return loginUser(username, password)
+        }).catch((er) => {
+            return Promise.reject(er)
+        })
+}
+
+export {loginUser, logoutUser, refreshToken, registerUser}

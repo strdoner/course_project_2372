@@ -4,13 +4,12 @@ import { logoutUser, refreshToken } from '../api/auth';
 import { useNavigate } from 'react-router-dom';
 
 function Dashboard() {
-    const {user, setUser, isUserLoggedIn, accessToken, setAccessToken} = useContext(UserContext)
+    const {user, setUser, isUserLoggedIn} = useContext(UserContext)
     const navigate = useNavigate();
     const logout = (e) => {
         e.preventDefault()
         logoutUser()
         setUser(null)
-        setAccessToken(null)
         navigate('/login')
     }
 
@@ -24,6 +23,7 @@ function Dashboard() {
             </h1>
             <button onClick={logout}>logout</button>
         </div>
+        
     )
 }
 
