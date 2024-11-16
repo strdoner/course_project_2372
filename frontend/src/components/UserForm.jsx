@@ -71,7 +71,7 @@ function LoginForm () {
                 placeholder='Enter Password'
                 required/>
             <div className='text-danger text-center'>{error}</div>
-            <Button btnType={"primary"} type="submit">Login</Button>        
+            <Button btnType={"violet"} type="submit">Login</Button>        
         </form>
     )
 }
@@ -152,7 +152,7 @@ function RegisterForm(){
             />
             <div className='text-danger text-center'>{error.password2}</div>
 
-            <Button btnType={"primary"}>Register</Button>   
+            <Button btnType={"violet"}>Register</Button>   
         </form>
     )
 }

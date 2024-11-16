@@ -1,6 +1,7 @@
 
 import './styles/App.css';
-import 'bootstrap/dist/css/bootstrap.css'
+import "bootstrap/dist/css/bootstrap.min.css";
+import "bootstrap/dist/js/bootstrap.bundle.min";
 import {Route, Routes, Navigate} from "react-router-dom"
 import Dashboard from './pages/Dashboard';
 import Login from './pages/Login'
@@ -18,7 +19,7 @@ function App() {
 
 
 
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState({username:''});
   const isUserLoggedIn = () => {
     if (window.localStorage.getItem("access_token") === null) {
       return refreshToken()

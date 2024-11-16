@@ -4,6 +4,10 @@
     box-sizing: border-box;
 }
 
+body {
+    background: #ecf1f7!important;
+}
+
 .text__help {
     color: #757575;
     padding: 20px 0 0 0;
@@ -28,8 +32,19 @@
     
     border-radius: 10px;
     padding: 50px;
-    background: white;
+    background: #fff;
     min-width: 600px;
+    box-shadow: rgba(17, 17, 26, 0.1) 0px 4px 16px, rgba(17, 17, 26, 0.05) 0px 8px 32px;
+
+}
+
+.btn-violet {
+    background-color: #474853!important;
+    color: #fff!important;
+}
+
+.btn-outline-violet {
+    border: 1px solid #474853!important;
 }
 
 .login__block>form {
@@ -46,3 +61,51 @@
     font-size: 20px;
     border: 1px solid #acabab;
 }
+
+.charts {
+    max-width: 1500px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 50px 50px;
+    
+    
+}
+
+.charts__item, .new_charts__item {
+    /* border: 1px solid #59A9FF; */
+    border-radius: 20px;
+    padding: 30px;
+    margin: 15px 10px;
+    width: 100%!important;
+    max-height: 400px;
+    min-height: 300px;
+    background-color: #fff;
+    box-shadow: rgba(17, 17, 26, 0.1) 0px 4px 16px, rgba(17, 17, 26, 0.05) 0px 8px 32px;
+}
+
+.new_charts__item {
+    cursor: pointer;
+    color: #d2d6db;
+}
+
+.charts__item__footer {
+    width: 100%;
+    display: grid;
+    justify-content: end;
+}
+
+.chart__item__btn {
+    cursor: pointer;
+}
+
+.chart {
+    width: 100%;
+    min-height: 100px;
+}
+
+.add_new_chart svg {
+    width: 125px;
+    height: 125px;
+    color: #d2d6db;
+}
+
