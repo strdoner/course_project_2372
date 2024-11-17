@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { AuthResponse } from '../models/response/AuthResponse'
 
 
 let $api = axios.create({
@@ -16,6 +17,23 @@ $api.interceptors.request.use((config) => {
         return config
     }
     return config
+})
+
+$api.interceptors.response.use((config) => {
+    return config
+}, async (er) => {
+    const originalRequest = er.config;
+    if (er.response.status == 401 && er.config && !er.config._isRetry) {
+        originalRequest._isRetry = true
+        try {
+            const response = await $api.post<AuthResponse>('http://127.0.0.1:8000/api/token/refresh/', {withCredentials: true})
+            localStorage.setItem('token_access', response.data.access)
+            return $api.request(originalRequest)
+        } catch (e) {
+            console.log('not logged in')
+        }
+    }
+    throw er
 })
 
 export default $api;
