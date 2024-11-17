@@ -2,50 +2,40 @@
 import './styles/App.css';
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min";
-import {Route, Routes, Navigate} from "react-router-dom"
+import {Route, Routes, Navigate, useNavigate} from "react-router-dom"
 import Dashboard from './pages/Dashboard';
 import Login from './pages/Login'
 import Register from './pages/Register'
-import React, {useContext, useState} from 'react';
-import {UserContext} from './contexts/userContext.js';
-import { refreshToken } from './api/auth.js';
+import React, {useContext, useState, useEffect} from 'react';
+import { Context } from './index.js';
+import { observer } from 'mobx-react-lite'
 
-function RequireAuth({children, redirectTo, isAuthenticated}) {
-  
-  return isAuthenticated ? children : <Navigate to={redirectTo} />
-}
+
 
 function App() {
-
-
-
-  const [user, setUser] = useState({username:''});
-  const isUserLoggedIn = () => {
-    if (window.localStorage.getItem("access_token") === null) {
-      return refreshToken()
+  const {store} = useContext(Context)
+  useEffect(() => {
+    if (localStorage.getItem('access_token')) {
+      store.checkAuth()
+      
+      
     }
-    
-    return true
+  }, [])
+
+  if (store.isLoading) {
+    return <div>Loading...</div>
   }
 
-  
-
   return ( 
-      <UserContext.Provider value={{user, setUser, isUserLoggedIn}}>
-        <Routes>
-          <Route path="/" element={
-            <RequireAuth redirectTo="/login" isAuthenticated={isUserLoggedIn()}>
-              <Dashboard />
-            </RequireAuth>
-          } /> 
-          <Route path='/login' element={<Login />} />
-          <Route path='/register' element={<Register />} />
-        </Routes>
-      </UserContext.Provider>
+      <Routes>
+        <Route path="/" element={store.isAuth ? <Dashboard /> : <Navigate to="/login" />} /> 
+        <Route path='/login' element={<Login />} />
+        <Route path='/register' element={<Register />} />
+      </Routes>
   );
 }
 
-export default App;
+export default observer(App);
 
 
 

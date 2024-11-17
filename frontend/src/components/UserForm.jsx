@@ -1,22 +1,27 @@
 import React, { isValidElement, useState, useContext } from 'react'
 import Button from './Button'
-import { loginUser, registerUser, refreshToken } from '../api/auth.js'
-import { UserContext } from '../contexts/userContext.js'
-import { useNavigate } from "react-router-dom"
-
+import { useNavigate, Navigate } from "react-router-dom"
+import { Context } from '../index.js'
+import {observer} from 'mobx-react-lite'
 
 
 const UserForm = ({formType}) => {
+    const {store} = useContext(Context)
+        if (store.isAuth) {
+            return <Navigate to={'/'} />
+        }
+
         if (formType === "login") {
             return <LoginForm />
         }
+
         return <RegisterForm />
 }
 
 
 function LoginForm () {
     const navigate = useNavigate();
-    const {user, setUser, isUserLoggedIn} = useContext(UserContext)
+    const {store} = useContext(Context)
     const [username, setUsername] = useState("")
     const [password, setPassword] = useState("")
     const [error, setError] = useState("")
@@ -28,16 +33,17 @@ function LoginForm () {
         if (!isValidLoginForm()) {
             return
         }
-        loginUser(username, password).then((data) => {
-            setUser({username:username})
-            navigate('/')
-
-
-        }).catch((error)=> {
-            if (error.status === 401) {
-                setError("Incorrect login or password!")
+        
+        const response = store.loginUser(username, password)
+        response.then(function(er) {
+            if (er !== undefined) {
+                setError("Incorrect username or password")
             }
-        })      
+            else {
+                navigate('/')   
+            }
+        })
+        
     }
 
     
@@ -78,9 +84,10 @@ function LoginForm () {
 
 function RegisterForm(){
     const navigate = useNavigate();
-    const {user, setUser, isUserLoggedIn} = useContext(UserContext)
+    const {store} = useContext(Context)
+    const initialState = {username:'', email:'', password:'', password2:''};
     const [form, setForm] = useState({username:'', email:'', password:'', password2:''})
-    const [error, setError] = useState({username:'', email:'', password:'', password2:''})
+    const [error, setError] = useState(initialState)
 
     const onRegisterFormSubmit = (e) => {
         e.preventDefault();
@@ -89,19 +96,27 @@ function RegisterForm(){
             return
         }
 
-        registerUser(form.username, form.email, form.password, form.password2).then((data) => {
-            setUser({username:form.username})
-            navigate('/')
-        }).catch((error)=> {
-            if (error.response.data["username"] !== undefined) {
-                setError({...error, username:error.response.data["username"]})
+        const response = store.registerUser(form.username, form.email, form.password, form.password2)
+        response.then(function(er) {
+            console.log(er)
+            if (er !== undefined) {
+                if (er.username !== undefined) {
+                    setError({...error, username:er.username})
+                }
+                if (er.email !== undefined) {
+                    setError({...error, email:er.email})
+                }
             }
-        })    
+            else {
+                navigate('/')   
+            }
+        })
+          
         
     }
 
     const isValidRegisterForm = () => {
-        setError({username:'', email:'', password:'', password2:''})
+        
         if (form.password !== form.password2){
             setError({...error, password2:"Passwords don`t match"})
             return false;
@@ -152,9 +167,9 @@ function RegisterForm(){
             />
             <div className='text-danger text-center'>{error.password2}</div>
 
-            <Button btnType={"violet"}>Register</Button>   
+            <Button btnType={"violet"} onClick={e => setError(initialState)}>Register</Button>   
         </form>
     )
 }
 
-export default UserForm
+export default observer(UserForm)

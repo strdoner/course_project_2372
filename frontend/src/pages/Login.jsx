@@ -2,6 +2,7 @@ import React from 'react'
 import UserForm from '../components/UserForm'
 import Button from '../components/Button'
 import { Link } from 'react-router-dom'
+import {observer} from 'mobx-react-lite'
 
 const Login = () => {
     
@@ -25,4 +26,4 @@ const Login = () => {
     )
 }
 
-export default Login;
+export default observer(Login);

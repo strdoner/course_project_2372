@@ -1,20 +1,18 @@
-import React, { useContext } from 'react'
-import { UserContext } from '../contexts/userContext';
-import { logoutUser, refreshToken } from '../api/auth';
+import React, { useContext, useEffect } from 'react'
+import { Context } from '../index.js'
 import { useNavigate } from 'react-router-dom';
 import Chartitem from '../components/Chartitem';
 import Button from '../components/Button';
 import NewChartitem from '../components/NewChartItem';
 import LoadChartForm from '../components/LoadChartForm'
+import { jwtDecode } from 'jwt-decode';
+import {observer} from 'mobx-react-lite'
+
+
 function Dashboard() {
-    const {user, setUser, isUserLoggedIn} = useContext(UserContext)
+    const {store} = useContext(Context)
     const navigate = useNavigate();
-    const logout = (e) => {
-        e.preventDefault()
-        logoutUser()
-        setUser(null)
-        navigate('/login')
-    }
+    
 
 
 
@@ -28,10 +26,10 @@ function Dashboard() {
                         Some dashboard name
                     </h5>
                     <div className='d-flex align-content-center'>
-                        <h5>
-                            {user.username}
+                        <h5 className='nav__username'>
+                            {store.username}
                         </h5>
-                        <a onClick={logout} className='text-danger'>logout</a>
+                        <a onClick={() => store.logoutUser()} className='text-danger'>logout</a>
                     </div>
                 </div>
                 
@@ -70,4 +68,4 @@ function Dashboard() {
     )
 }
 
-export default Dashboard;
+export default observer(Dashboard);
