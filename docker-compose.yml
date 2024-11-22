@@ -1,5 +1,5 @@
 services:
-  db:
+  postgres:
     container_name: postgres
     image: postgres:17
     ports:
@@ -26,6 +26,8 @@ services:
     restart: unless-stopped
     ports:
       - '8000:8000'
+    depends_on:
+      - postgres
 
 volumes:
   postgres:
