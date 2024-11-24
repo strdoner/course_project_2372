@@ -2,12 +2,12 @@ import React from 'react'
 import Chart from './Chart';
 
 
-const Chartitem = () => {
+const Chartitem = ({chart, ...props}) => {
     
     return (
         <div className='charts__item col-md-4 col-12 d-grid align-content-between'>
 
-            <h4>Lorem ipsum</h4>
+            <h4>{chart.title}</h4>
             <Chart />
 
             <div className='charts__item__footer'>

@@ -5,6 +5,7 @@ import { jwtDecode } from "jwt-decode";
 import { JwtResponse } from "../models/response/JwtResponse.ts";
 
 import { AuthResponse } from "../models/response/AuthResponse.ts";
+import UserService from "../services/UserService.ts";
 
 
 
@@ -76,6 +77,16 @@ export default class Store {
 
         } finally {
             this.setLoading(false);
+        }
+    }
+
+    async getCharts() {
+        
+        try {
+            const response = await UserService.getCharts()
+            return response.data
+        } catch (e) {
+            console.log(e)
         }
     }
 }

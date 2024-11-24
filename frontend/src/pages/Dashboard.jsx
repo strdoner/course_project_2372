@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { Context } from '../index.js'
 import { useNavigate } from 'react-router-dom';
 import Chartitem from '../components/Chartitem';
@@ -7,14 +7,14 @@ import NewChartitem from '../components/NewChartItem';
 import LoadChartForm from '../components/LoadChartForm'
 import { jwtDecode } from 'jwt-decode';
 import {observer} from 'mobx-react-lite'
+import ChartsList from '../components/ChartsList.jsx';
 
 
 function Dashboard() {
     const {store} = useContext(Context)
     const navigate = useNavigate();
     
-
-
+    
 
 
     return (
@@ -35,32 +35,7 @@ function Dashboard() {
                 
             </div>
 
-            <div className='charts'>
-            <LoadChartForm formId={'loadChartForm'}/>
-
-                <div className='row'>
-                    <div className='col-lg-4 col-md-6 col-12'>
-                        <NewChartitem />
-                    </div>
-                    
-                    <div className='col-lg-4 col-md-6 col-12'>
-                        <Chartitem />
-                    </div>
-                    <div className='col-lg-4 col-md-6 col-12'>
-                        <Chartitem />
-                    </div>
-                    <div className='col-lg-4 col-md-6 col-12'>
-                        <Chartitem />
-                    </div>
-                    <div className='col-lg-4 col-md-6 col-12'>
-                        <Chartitem />
-                    </div>
-                    <div className='col-lg-4 col-md-6 col-12'>
-                        <Chartitem />
-                    </div>
-
-                </div>
-            </div>
+            <ChartsList />
         </div>
 
 
