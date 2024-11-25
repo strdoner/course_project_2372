@@ -9,9 +9,9 @@ RUN pip install --no-cache --upgrade pip
 RUN pip install --no-cache -r requirements.txt
 
 COPY . .
-COPY .env ./backend
+COPY .env ./backend/
 
 EXPOSE 8000
 RUN chmod +x /app/backend/entrypoint.sh
-ENTRYPOINT ["/app/backend/entrypoint.sh"]
+ENTRYPOINT ["sh", "/app/backend/entrypoint.sh"]
 CMD [ "python", "manage.py", "runserver", "0.0.0.0:8000" ]
