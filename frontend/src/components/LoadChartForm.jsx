@@ -1,8 +1,10 @@
 import React from 'react'
 import ChartForm from './ChartForm'
+import { useEffect, useState } from 'react'
 
 
-const LoadChartForm = ({formId, ...props}) => {
+const LoadChartForm = ({formId, createChart, ...props}) => {
+    
     return (
         <div>
             <div className="modal fade" id={formId} aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabIndex="-1">
@@ -10,10 +12,10 @@ const LoadChartForm = ({formId, ...props}) => {
                     <div className="modal-content">
                         <div className="modal-header">
                             <h5 className="modal-title" id="exampleModalToggleLabel">Create a new chart</h5>
-                            <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            <button type="button" className="btn-close close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div className="modal-body text-center">
-                            <ChartForm />
+                            <ChartForm formId={formId} createChart={createChart}/>
                         </div>
                         <div className="modal-footer">
                         </div>

@@ -30,12 +30,24 @@ const ChartsList = () => {
         </div>
     );
     }
+
+    const createChart = (newChart) => {
+        setCharts([newChart, ...charts])
+    }
+
+    const deleteChart = (chart) => {
+        setCharts(charts.filter((el) => el.id !== chart.id))
+        store.deleteChart(chart.id)
+        .then((e) => {
+            
+        })
+    }
     
 
 
     return (
             <div className='charts'>
-            <LoadChartForm formId={'loadChartForm'}/>
+            <LoadChartForm formId={'loadChartForm'} createChart={createChart}/>
 
                 <div className='row justify-content-center'>
                     <div className='col-lg-4 col-md-6 col-12'>
@@ -43,7 +55,7 @@ const ChartsList = () => {
                     </div>
                     {charts.map(chart => 
                         <div className='col-lg-4 col-md-6 col-12' key={chart.id}>
-                            <Chartitem chart={chart}/>
+                            <Chartitem chart={chart} deleteChart={deleteChart}/>
                         </div>
                     )}
                     

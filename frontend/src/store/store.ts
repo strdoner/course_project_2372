@@ -89,4 +89,22 @@ export default class Store {
             console.log(e)
         }
     }
+
+    async postChart(title:string, min_x:number, min_y:number, max_x:number, max_y:number) {
+        try {
+            const response = await UserService.postChart(title, min_x, min_y, max_x, max_y)
+            return response.data
+        } catch (e) {
+            console.log(e)
+        }
+    }
+
+    async deleteChart(id:number) {
+        try {
+            const response = await UserService.deleteChart(id)
+            
+        } catch (e) {
+            console.log(e)
+        }
+    }
 }

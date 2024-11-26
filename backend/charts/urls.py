@@ -10,6 +10,7 @@ router = routers.DefaultRouter()
 urlpatterns = [
     path('', include(router.urls)),
     path('charts/', charts_list.as_view(), name='get_charts'),
+    path('charts/delete/<int:chart_id>', chart_detail.as_view(), name='chart_detail')
 
 
     
