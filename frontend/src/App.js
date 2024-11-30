@@ -22,9 +22,6 @@ function App() {
     }
   }, [])
 
-  if (store.isLoading) {
-    return <div>Loading...</div>
-  }
 
   return ( 
       <Routes>

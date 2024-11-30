@@ -1,6 +1,6 @@
 import React from 'react'
 import Chart from './Chart';
-
+import {observer} from 'mobx-react-lite'
 
 const Chartitem = ({chart, deleteChart, ...props}) => {
     
@@ -8,7 +8,7 @@ const Chartitem = ({chart, deleteChart, ...props}) => {
         <div className='charts__item col-md-4 col-12 d-grid align-content-between'>
 
             <h4>{chart.title}</h4>
-            <Chart />
+            <Chart keys={chart.keys} index={chart.id}/>
 
             <div className='charts__item__footer'>
                 <a className='chart__item__btn' onClick={(e) => {deleteChart(chart)}}>
@@ -23,4 +23,4 @@ const Chartitem = ({chart, deleteChart, ...props}) => {
     )
 }
 
-export default Chartitem;
+export default observer(Chartitem);

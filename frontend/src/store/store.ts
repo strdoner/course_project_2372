@@ -30,6 +30,7 @@ export default class Store {
     }
 
     async loginUser(username:string, password:string) {
+        this.isLoading = true;
         try {
             const response = await AuthService.loginUser(username, password)
             localStorage.setItem('access_token', response.data.access)
@@ -37,18 +38,22 @@ export default class Store {
             const decoded = jwtDecode<JwtResponse>(response.data.access).username
             this.setUser(decoded)
         } catch (e) {
-            return e?.response?.data
+            return e?.response?.data;
+        } finally {
+            this.isLoading = false;
         }
     }
 
     async registerUser(username:string, email:string, password:string, password2:string) {
+        
         try {
             const response = await AuthService.registerUser(username, email, password, password2)
-            this.loginUser(username, password)
+            await this.loginUser(username, password)
             
         } catch (e) {
             return e?.response?.data
         }
+
     }
 
     async logoutUser() {
@@ -81,18 +86,20 @@ export default class Store {
     }
 
     async getCharts() {
-        
+        this.setLoading(true);
         try {
             const response = await UserService.getCharts()
             return response.data
         } catch (e) {
             console.log(e)
+        } finally {
+            this.setLoading(false);
         }
     }
 
-    async postChart(title:string, min_x:number, min_y:number, max_x:number, max_y:number) {
+    async postChart(title:string, min_x:number, min_y:number, max_x:number, max_y:number, data:object) {
         try {
-            const response = await UserService.postChart(title, min_x, min_y, max_x, max_y)
+            const response = await UserService.postChart(title, min_x, min_y, max_x, max_y, data)
             return response.data
         } catch (e) {
             console.log(e)

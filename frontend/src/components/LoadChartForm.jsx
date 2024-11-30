@@ -8,7 +8,7 @@ const LoadChartForm = ({formId, createChart, ...props}) => {
     return (
         <div>
             <div className="modal fade" id={formId} aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabIndex="-1">
-                <div className="modal-dialog modal-dialog-centered">
+                <div className="modal-dialog modal-dialog-centered modal-fullscreen-md-down modal-dialog-scrollable">
                     <div className="modal-content">
                         <div className="modal-header">
                             <h5 className="modal-title" id="exampleModalToggleLabel">Create a new chart</h5>
@@ -17,8 +17,7 @@ const LoadChartForm = ({formId, createChart, ...props}) => {
                         <div className="modal-body text-center">
                             <ChartForm formId={formId} createChart={createChart}/>
                         </div>
-                        <div className="modal-footer">
-                        </div>
+                        
                     </div>
                 </div>
             </div>

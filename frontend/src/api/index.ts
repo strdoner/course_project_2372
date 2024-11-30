@@ -27,7 +27,7 @@ $api.interceptors.response.use((config) => {
         originalRequest._isRetry = true
         try {
             const response = await axios.post<AuthResponse>('http://127.0.0.1:8000/api/auth/token/refresh/', {withCredentials: true})
-            localStorage.setItem('token_access', response.data.access)
+            localStorage.setItem('access_token', response.data.access)
             return $api.request(originalRequest)
         } catch (e) {
             console.log('not logged in')

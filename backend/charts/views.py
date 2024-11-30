@@ -21,7 +21,11 @@ class charts_list(APIView):
         data = {
             'user':request.user.id,
             'title':request.data.get('title'),
-            'keys':{"x":[1,2,3]}
+            'min_x':request.data.get('min_x'),
+            'min_y':request.data.get('min_y'),
+            'max_x':request.data.get('max_x'),
+            'max_y':request.data.get('max_y'),
+            'keys':request.data.get('data')
         }
         serializer = ChartModelSerializer(data=data)
         if serializer.is_valid():

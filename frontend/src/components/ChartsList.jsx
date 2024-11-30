@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState, memo, useMemo } from 'react'
 import { Context } from '../index.js'
 import Chartitem from '../components/Chartitem';
 import NewChartitem from '../components/NewChartItem';
@@ -8,22 +8,17 @@ import {observer} from 'mobx-react-lite'
 
 const ChartsList = () => {
     const {store} = useContext(Context)
-    const [charts, setCharts] = useState([
-        {id:1, title:"hello"},
-        {id:2, title:"world"},
-        {id:3, title:"1234"},
-    ])
-    const [isLoading, setIsLoading] = useState(true)
+    const [charts, setCharts] = useState([])
     useEffect(() => {
         const response = store.getCharts();
         response.then(function(data) {
             setCharts(data)
-            setIsLoading(false);
+            
             
         })
       }, []);
 
-    if (isLoading) {
+    if (store.isLoading) {
     return (
         <div className='charts'style={{display:"flex", alignItems:"center", justifyContent:"center"}}>
             <div className="spinner-grow text-muted"></div>
@@ -55,7 +50,7 @@ const ChartsList = () => {
                     </div>
                     {charts.map(chart => 
                         <div className='col-lg-4 col-md-6 col-12' key={chart.id}>
-                            <Chartitem chart={chart} deleteChart={deleteChart}/>
+                            <Chartitem chart={chart} deleteChart={deleteChart} key={chart.id}/>
                         </div>
                     )}
                     

@@ -121,3 +121,14 @@ body {
     margin-right: 10px;
 }
 
+.short__form_item {
+    width: 150px!important;
+}
+
+.min-h {
+    height: min-content;
+}
+
+canvas {
+    width: 100%;
+}
