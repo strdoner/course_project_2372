@@ -1,14 +1,17 @@
 import React from 'react'
 import Chart from './Chart';
 import {observer} from 'mobx-react-lite'
-
+import { useNavigate } from 'react-router-dom';
 const Chartitem = ({chart, deleteChart, ...props}) => {
+    const navigate = useNavigate();
     
+
     return (
         <div className='charts__item col-md-4 col-12 d-grid align-content-between'>
-
-            <h4>{chart.title}</h4>
-            <Chart keys={chart.keys} index={chart.id}/>
+            <div onClick={(e) => {navigate(`/charts/${chart.id}`)}}>
+                <h4>{chart.title}</h4>
+                <Chart keys={chart.keys} index={chart.id}/>
+            </div>
 
             <div className='charts__item__footer'>
                 <a className='chart__item__btn' onClick={(e) => {deleteChart(chart)}}>

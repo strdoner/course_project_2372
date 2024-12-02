@@ -43,6 +43,11 @@ class chart_detail(APIView):
             return Chart.objects.get(id=chart_id, user=user_id)
         except Chart.DoesNotExist:
             return None
+        
+    def get(self, request, chart_id):
+        chart_instance = self.get_object(chart_id, request.user.id)
+        serializer = ChartModelSerializer(chart_instance)
+        return JsonResponse(serializer.data, status=status.HTTP_200_OK)
 
     def delete(self, request, chart_id):
         chart_instance = self.get_object(chart_id, request.user.id)

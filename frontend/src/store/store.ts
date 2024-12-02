@@ -3,7 +3,7 @@ import $api from "../api/index.ts"
 import AuthService from "../services/AuthService.ts";
 import { jwtDecode } from "jwt-decode";
 import { JwtResponse } from "../models/response/JwtResponse.ts";
-
+import axios from "axios";
 import { AuthResponse } from "../models/response/AuthResponse.ts";
 import UserService from "../services/UserService.ts";
 
@@ -13,8 +13,9 @@ export default class Store {
     username = "";
     isAuth = false;
     isLoading = false;
+    isAuthLoading = true;
     constructor() {
-        makeAutoObservable(this)
+        makeAutoObservable(this, {}, { autoBind: true });
     }
 
     setAuth(bool: boolean) {
@@ -27,6 +28,10 @@ export default class Store {
 
     setLoading(bool: boolean) {
         this.isLoading = bool;
+    }
+
+    setAuthLoading(bool: boolean) {
+        this.isAuthLoading = bool;
     }
 
     async loginUser(username:string, password:string) {
@@ -68,10 +73,10 @@ export default class Store {
     }
 
     async checkAuth() {
-        this.setLoading(true)
+        this.setAuthLoading(true)
         try {
-            
-            const response = await $api.post<AuthResponse>('http://127.0.0.1:8000/api/auth/token/refresh/', {withCredentials: true})
+            axios.defaults.withCredentials = true
+            const response = await axios.post<AuthResponse>('http://127.0.0.1:8000/api/auth/token/refresh/', {withCredentials: true})
             
             localStorage.setItem('access_token', response.data.access)
             this.setAuth(true)
@@ -81,7 +86,8 @@ export default class Store {
             console.log(e)
 
         } finally {
-            this.setLoading(false);
+            this.setAuthLoading(false);
+            console.log("loaded")
         }
     }
 
@@ -112,6 +118,18 @@ export default class Store {
             
         } catch (e) {
             console.log(e)
+        }
+    }
+
+    async getChart(id:number) {
+        this.setLoading(true)
+        try {
+            const response = await UserService.getChart(id)
+            return response.data
+        } catch (e) {
+            console.log(e)
+        } finally {
+            this.setLoading(false);
         }
     }
 }

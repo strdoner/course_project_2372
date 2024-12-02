@@ -17,6 +17,11 @@ export default class UserService {
         return $api.delete(`api/charts/delete/${id}`)
         .then(response => response)
     }
+
+    static async getChart(id:number) {
+        return $api.get(`api/charts/${id}`)
+        .then(response => response)
+    }
     
 }
 
