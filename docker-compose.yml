@@ -28,6 +28,22 @@ services:
       - '8000:8000'
     depends_on:
       - postgres
+  
+  redis:
+    container_name: redis
+    image: redis:7
+    ports:
+      - '6379:6379'
+  
+  celery:
+    container_name: celery
+    build: ./backend
+    command: celery -A backend worker -l info
+    environment:
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - CELERY_RESULT_BACKEND=redis://redis:6379/0
+    depends_on:
+      - redis
 
 volumes:
   postgres:
