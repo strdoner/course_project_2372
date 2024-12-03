@@ -6,7 +6,7 @@ import {observer} from 'mobx-react-lite'
 const Button = ({children, btnType, ...props}) => {
     const {store} = useContext(Context)
     
-    if (store.isLoading) {
+    if (props.isloading) {
         return (
             <button {...props} className={`btn btn-${btnType} disabled d-flex justify-content-center`}>
                 <h5>{children}</h5>

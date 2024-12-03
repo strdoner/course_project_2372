@@ -23,5 +23,8 @@ export default class UserService {
         .then(response => response)
     }
     
+    static async editChart(id:number, data:object) {
+        return $api.patch(`api/charts/${id}`, {keys:data})
+    }
 }
 

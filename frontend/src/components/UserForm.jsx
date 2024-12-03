@@ -79,7 +79,7 @@ function LoginForm () {
                 placeholder='Enter Password'
                 required/>
             <div className='text-danger text-center'>{error}</div>
-            <Button btnType={"violet"} type="submit">Login</Button>        
+            <Button btnType={"violet"} type="submit" isLoading={store.isLoading ? 1 : 0}>Login</Button>        
         </form>
     )
 }
@@ -169,7 +169,7 @@ function RegisterForm(){
             />
             <div className='text-danger text-center'>{error.password2}</div>
 
-            <Button btnType={"violet"} onClick={e => setError(initialState)}>Register</Button>   
+            <Button btnType={"violet"} onClick={e => setError(initialState)} isloading={store.isLoading ? 1 : 0}>Register</Button>   
         </form>
     )
 }

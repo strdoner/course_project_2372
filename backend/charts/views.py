@@ -48,6 +48,18 @@ class chart_detail(APIView):
         chart_instance = self.get_object(chart_id, request.user.id)
         serializer = ChartModelSerializer(chart_instance)
         return JsonResponse(serializer.data, status=status.HTTP_200_OK)
+    
+    def patch(self, request, chart_id):
+        chart_instance = self.get_object(chart_id, request.user.id)
+        serializer = ChartModelSerializer(chart_instance, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return JsonResponse(data=serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            return Response(
+                {"res":"wrong parametres!"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
 
     def delete(self, request, chart_id):
         chart_instance = self.get_object(chart_id, request.user.id)

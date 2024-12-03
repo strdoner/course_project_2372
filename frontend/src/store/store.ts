@@ -132,4 +132,14 @@ export default class Store {
             this.setLoading(false);
         }
     }
+
+    async editChart(id:number, data:object) {      
+        try {
+            const response = await UserService.editChart(id, data);
+            return response
+        } catch (e) {
+            console.log(e);
+
+        }
+    }
 }

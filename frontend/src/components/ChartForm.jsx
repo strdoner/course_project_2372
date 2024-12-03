@@ -148,7 +148,7 @@ const ChartForm = ({formId, createChart, ...props}) => {
                     add new pair
                 </Button>
                 {pairs.length > 0 ?
-                    <Button btnType={"outline-secondary"} onClick={removePair} type="button">
+                    <Button btnType={"outline-secondary"} onClick={removePair} type="button" isLoading={false}>
                         remove a pair
                     </Button>
                 :
@@ -167,7 +167,7 @@ const ChartForm = ({formId, createChart, ...props}) => {
                 <h6>{error.keys}</h6>
             </div>
 
-            <Button btnType={"violet"} type="submit" onClick={e => setError({title:"", range_x:"", range_y:"", keys:""})}>Create a chart</Button>        
+            <Button isloading={0} btnType={"violet"} type="submit" onClick={e => setError({title:"", range_x:"", range_y:"", keys:""})}>Create a chart</Button>        
         </form>
     )
 
