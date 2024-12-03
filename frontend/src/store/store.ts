@@ -87,7 +87,7 @@ export default class Store {
 
         } finally {
             this.setAuthLoading(false);
-            console.log("loaded")
+            
         }
     }
 
