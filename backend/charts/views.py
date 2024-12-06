@@ -2,11 +2,13 @@ from django.shortcuts import render
 from .models import Chart
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.parsers import MultiPartParser, FormParser
 from .serializers import ChartModelSerializer
 from django.http import JsonResponse
 from django.contrib.auth.models import User
 from rest_framework import status
 from rest_framework.response import Response
+from .task import process_uploaded_file
 
 class charts_list(APIView):
     permission_classes = [IsAuthenticated]
@@ -70,4 +72,37 @@ class chart_detail(APIView):
             )
         chart_instance.delete()
         return Response(status=status.HTTP_200_OK)
+    
+class file_upload(APIView):
+    parser_classes = [MultiPartParser, FormParser]
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        file = request.FILES.get('file')
+        if not file:
+            return JsonResponse({"error": "No file provided"}, status=400)
+
+        upload_dir = os.path.join(settings.MEDIA_ROOT, 'uploads')
+        os.makedirs(upload_dir, exist_ok=True)
+        file_path = os.path.join(upload_dir, file.name)
+
+        with open(file_path, 'wb') as f:
+            for chunk in file.chunks():
+                f.write(chunk)
+
+        task = process_uploaded_file.delay(file_path, request.user.id)
+        return JsonResponse({"task_id": task.id, "status": "processing"})
+
+class task_status(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, task_id):
+        result = AsyncResult(task_id)
+
+        if result.state == "SUCCESS":
+            return JsonResponse({"status": "completed", "result": result.result})
+        elif result.state == "FAILURE":
+            return JsonResponse({"status": "failed", "error": str(result.result)})
+        else:
+            return JsonResponse({"status": result.state})
         
