@@ -26,5 +26,14 @@ export default class UserService {
     static async editChart(id:number, data:object) {
         return $api.patch(`api/charts/${id}`, {keys:data})
     }
+
+    static async postFile(file:File) {
+        return $api.post('api/charts/upload/', {file:file}, {headers: {'Content-Type': 'multipart/form-data'}})
+        .then(response => response)
+    }
+
+    static async checkFileProgress(task_id:string) {
+        return $api.get(`api/status/${task_id}`)
+    }
 }
 

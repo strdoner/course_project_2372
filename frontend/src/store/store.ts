@@ -142,4 +142,23 @@ export default class Store {
 
         }
     }
+
+    async postFile(file:File) {
+        try {
+            const response = await UserService.postFile(file);
+            return response.data;
+        } catch (e) {
+            console.log(e);
+        }
+    }
+
+    async checkFileProgress(task_id:string) {
+        try {
+            const response = await UserService.checkFileProgress(task_id);
+            return response.data;
+        } catch (e) {
+            console.log(e);
+        }
+
+    }
 }

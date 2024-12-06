@@ -104,9 +104,9 @@ class task_status(APIView):
         result = AsyncResult(task_id)
 
         if result.state == "SUCCESS":
-            return JsonResponse({"status": "completed", "result": result.result})
+            return JsonResponse({"status": "SUCCESS", "result": result.result})
         elif result.state == "FAILURE":
-            return JsonResponse({"status": "failed", "error": str(result.result)})
+            return JsonResponse({"status": "FAILURE", "error": str(result.result)})
         else:
             return JsonResponse({"status": result.state})
         
