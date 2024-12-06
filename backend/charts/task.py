@@ -1,5 +1,5 @@
 from celery import shared_task
-
+import os, json
 def parse_excel(file_path):
     return {
         "x": [1, 2, 3, 4, 5],

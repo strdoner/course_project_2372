@@ -12,7 +12,7 @@ urlpatterns = [
     path('charts/', charts_list.as_view(), name='get_charts'),
     path('charts/delete/<int:chart_id>', chart_detail.as_view(), name='chart_detail'),
     path('charts/<int:chart_id>', chart_detail.as_view(), name='get_chart'),
-    path('upload/', file_upload.as_view(), name='file_upload'),
+    path('charts/upload/', file_upload.as_view(), name='file_upload'),
     path('status/<str:task_id>/', task_status.as_view(), name='task_status')
 
 

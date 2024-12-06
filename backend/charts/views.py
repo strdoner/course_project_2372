@@ -6,9 +6,13 @@ from rest_framework.parsers import MultiPartParser, FormParser
 from .serializers import ChartModelSerializer
 from django.http import JsonResponse
 from django.contrib.auth.models import User
+from django.conf import settings
 from rest_framework import status
 from rest_framework.response import Response
 from .task import process_uploaded_file
+import os
+from celery.result import AsyncResult
+
 
 class charts_list(APIView):
     permission_classes = [IsAuthenticated]
@@ -80,7 +84,7 @@ class file_upload(APIView):
     def post(self, request):
         file = request.FILES.get('file')
         if not file:
-            return JsonResponse({"error": "No file provided"}, status=400)
+            return JsonResponse({"error": "No file provided"}, status=status.HTTP_400_BAD_REQUEST)
 
         upload_dir = os.path.join(settings.MEDIA_ROOT, 'uploads')
         os.makedirs(upload_dir, exist_ok=True)
