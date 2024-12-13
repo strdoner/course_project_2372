@@ -12,19 +12,21 @@ import json
 def process_uploaded_file(file_path, user_id):
     print(file_path)
     data = parse_excel(file_path)
-    data = {
-            'user':user_id,
-            'title':data.get('title'),
-            'min_x':1,
-            'min_y':1,
-            'max_x':1,
-            'max_y':1,
-            'keys':data.get('keys')
+    print(data)
+    for sheet in data:
+        sheet_data = {
+                'user':user_id,
+                'title':sheet.get('title'),
+                'min_x':1,
+                'min_y':1,
+                'max_x':1,
+                'max_y':1,
+                'keys':sheet.get('keys')
         }
-    serializer = ChartModelSerializer(data=data)
-    if serializer.is_valid():
-        serializer.save()
-        print(serializer.data)
+        serializer = ChartModelSerializer(data=sheet_data)
+        if serializer.is_valid():
+            serializer.save()
+            print(serializer.data)
 
 
     return {"status": "success", "result": data}
@@ -54,7 +56,7 @@ class CoordinateMapping:
             "error" : self.error,
         }
 
-        return json.dumps(format)
+        return format
 
 
 def parse_excel(file: IO[bytes]) -> List[CoordinateMapping]:
@@ -89,6 +91,6 @@ def parse_excel(file: IO[bytes]) -> List[CoordinateMapping]:
             mapping.append((x_value, y_value))
 
         # Добавление результата в список
-        result.append(CoordinateMapping(sheet_name=sheet_name, x_name=x_name, y_name=y_name, mapping=mapping))
+        result.append(CoordinateMapping(sheet_name=sheet_name, x_name=x_name, y_name=y_name, mapping=mapping).to_json())
 
     return result

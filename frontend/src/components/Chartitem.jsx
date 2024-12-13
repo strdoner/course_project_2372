@@ -10,7 +10,7 @@ const Chartitem = ({chart, deleteChart, ...props}) => {
         <div className='charts__item col-md-4 col-12 d-grid align-content-between'>
             <div onClick={(e) => {navigate(`/charts/${chart.id}`)}}>
                 <h4>{chart.title}</h4>
-                <Chart keys={chart.keys} index={chart.id}/>
+                <Chart keys={chart.keys} index={chart.id} hidePoints={1}/>
             </div>
 
             <div className='charts__item__footer'>
