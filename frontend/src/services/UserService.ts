@@ -1,5 +1,7 @@
+// @ts-ignore
 import $api from "../api/index.ts"
 import { AxiosResponse } from 'axios'
+// @ts-ignore
 import { ChartsResponse } from "../models/response/ChartsResponse.ts"
 
 export default class UserService {

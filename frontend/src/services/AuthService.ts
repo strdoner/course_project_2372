@@ -1,3 +1,4 @@
+// @ts-ignore
 import $api from "../api/index.ts"
 import { AxiosResponse } from 'axios'
 import { AuthResponse } from '../models/response/AuthResponse'

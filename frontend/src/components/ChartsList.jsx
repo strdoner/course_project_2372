@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState, memo, useMemo } from 'react'
+import React, { useContext, useEffect, useState} from 'react'
 import { Context } from '../index.js'
 import Chartitem from '../components/Chartitem';
 import NewChartitem from '../components/NewChartItem';
@@ -20,7 +20,7 @@ const ChartsList = () => {
 
     if (store.isLoading) {
     return (
-        <div className='charts'style={{display:"flex", alignItems:"center", justifyContent:"center"}}>
+        <div className='charts' style={{display:"flex", alignItems:"center", justifyContent:"center"}}>
             <div className="spinner-grow text-muted"></div>
         </div>
     );

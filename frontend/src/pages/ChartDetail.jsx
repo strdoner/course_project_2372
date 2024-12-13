@@ -11,7 +11,7 @@ const ChartDetail = () => {
     const [error, setError] = useState({x_key:"", y_key:""})
     const params = useParams()
     const {store} = useContext(Context)
-    const [chart, setChart] = useState({id:0, keys:0})
+    const [chart, setChart] = useState({id:0, keys: {x:[], y:[]}})
     const [point, setPoint] = useState("")
     const [isChangesLoading, SetChangesLoading] = useState(false)
 
@@ -21,7 +21,7 @@ const ChartDetail = () => {
             console.log(data)
             setChart(data)
         })
-    }, []);
+    }, [store, params.id]);
 
     const insert = (x, y, x_keys, y_keys, index=-1) => {
         if (index === -1) {
@@ -57,7 +57,6 @@ const ChartDetail = () => {
     }
 
     const findPoint = (point) => {
-        let dist = Math.abs(chart.keys.x[0] - point)
         let found_index = chart.keys.x.length
         for (let i = 0; i < chart.keys.x.length; i++) {
             if (point < chart.keys.x[i]) {
@@ -91,6 +90,7 @@ const ChartDetail = () => {
         }
 
     }
+
 
     if (store.isLoading) {
         return (
@@ -146,27 +146,27 @@ const ChartDetail = () => {
                                 <div className='d-flex justify-content-around min-h'>
                                     <div className=' form-floating min-h'>
                                         
-                                        <input
+                                        <textarea
                                             id='y_min'
                                             className={`short__form_item form-control ${error.x_key !== "" ? "is-invalid" : ""}`} 
                                             onChange={(event)=>{setKeys({...keys, x_key:Number(event.target.value)})}} 
-                                            
-                                            type="number"
-                                            step="0.01" 
+                                            value={chart.keys.x.join(`\n`)}
+
+
                                             placeholder='x_key'
                                             required/>
-                                        <label htmlFor="x_key">Enter x key</label>
+                                        <label htmlFor="x_key">Enter x keys</label>
                                         
                                     </div>
                                     <div className=' form-floating min-h'>
                                         
-                                        <input
+                                        <textarea
                                             id='y_max' 
                                             className={`short__form_item form-control ${error.y_key !== "" ? "is-invalid" : ""}`}
-                                            onChange={(event)=>{setKeys({...keys, y_key:Number(event.target.value)})}} 
-                                            
-                                            type="number"
-                                            step="0.01" 
+                                            onChange={(event)=>{setKeys({...keys, y_key:Number(event.target.value)})}}
+                                            value={chart.keys.y.join(`\n`)}
+
+
                                             placeholder='y_key'
                                             required/>
                                         <label htmlFor="y_key">Enter y key</label>

@@ -1,7 +1,6 @@
 import React, { createContext } from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
-import {BrowserRouter} from "react-router-dom"
 import Store from './store/store.ts';
 
 const store = new Store()

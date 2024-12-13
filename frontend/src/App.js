@@ -2,12 +2,12 @@
 import './styles/App.css';
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min";
-import {Route, Routes, Navigate, useNavigate, BrowserRouter} from "react-router-dom"
+import {Route, Routes, BrowserRouter} from "react-router-dom"
 import Dashboard from './pages/Dashboard';
 import Login from './pages/Login'
 import Register from './pages/Register'
 import ChartDetail from './pages/ChartDetail'
-import React, {useContext, useState, useEffect} from 'react';
+import React, {useContext, useEffect} from 'react';
 import { Context } from './index.js';
 import { observer } from 'mobx-react-lite'
 import PrivateRoute from './components/PrivateRoute.jsx';
@@ -19,7 +19,7 @@ function App() {
   useEffect(() => {
       store.checkAuth()
       
-  }, [])
+  }, [store])
 
   return ( 
     <BrowserRouter>

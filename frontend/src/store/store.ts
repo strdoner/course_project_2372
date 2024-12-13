@@ -1,5 +1,4 @@
 import { makeAutoObservable } from "mobx"
-import $api from "../api/index.ts"
 import AuthService from "../services/AuthService.ts";
 import { jwtDecode } from "jwt-decode";
 import { JwtResponse } from "../models/response/JwtResponse.ts";

@@ -2,7 +2,7 @@ import React from 'react'
 import Chart from './Chart';
 import {observer} from 'mobx-react-lite'
 import { useNavigate } from 'react-router-dom';
-const Chartitem = ({chart, deleteChart, ...props}) => {
+const Chartitem = ({chart, deleteChart}) => {
     const navigate = useNavigate();
     
 

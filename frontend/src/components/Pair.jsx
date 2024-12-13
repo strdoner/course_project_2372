@@ -1,6 +1,6 @@
 import React from 'react'
 import {observer} from 'mobx-react-lite'
-const Pair = ({pair, index, handleChange, ...props}) => {
+const Pair = ({pair, index, handleChange}) => {
     return (
         <div className='d-flex justify-content-around'>
             <div className=' form-floating min-h'>

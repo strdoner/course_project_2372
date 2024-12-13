@@ -1,11 +1,10 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useContext} from 'react'
 import { useState } from 'react'
 import Button from './Button'
 import { Context } from '../index.js'
-import {observer} from 'mobx-react-lite'
 import Pair from './Pair.jsx'
 
-const ChartForm = ({formId, createChart, ...props}) => {
+const ChartForm = ({formId, createChart}) => {
     const [error, setError] = useState({title:null, range_x:"", range_y:"", keys:"", file:""})
     const [form, setForm] = useState({title:"", min_x:0, min_y:0, max_x:0, max_y:0})
     const [pairs, setPairs] = useState([])
@@ -23,7 +22,7 @@ const ChartForm = ({formId, createChart, ...props}) => {
                     
                     const response = store.checkFileProgress(e.task_id)
                     .then((e) => {
-                        if (e.status == "SUCCESS" || e.status == "FAILURE") {
+                        if (e.status === "SUCCESS" || e.status === "FAILURE") {
                             clearInterval(statusChecker)
                             console.log(e.status)
                         }

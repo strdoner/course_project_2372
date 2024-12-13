@@ -1,9 +1,8 @@
 import React from 'react'
 import ChartForm from './ChartForm'
-import { useEffect, useState } from 'react'
 
 
-const LoadChartForm = ({formId, createChart, ...props}) => {
+const LoadChartForm = ({formId, createChart}) => {
     
     return (
         <div>
