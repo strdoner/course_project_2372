@@ -83,40 +83,61 @@ const ChartDetail = () => {
         })
     }
 
-    const findPoint = (point) => {
-        let found_index = chart.keys.x.length
-        for (let i = 0; i < chart.keys.x.length; i++) {
-            if (point < chart.keys.x[i]) {
-                found_index = i - 1
-                break
+    const findPointIndex = (point) => {
+        let index = chart.keys.x.findIndex(x => x === point);
+        if (index !== -1) return index; // Точка уже существует
+
+        if (point < chart.keys.x[0]) return -1; // Перед первой точкой
+        if (point > chart.keys.x[chart.keys.x.length - 1]) return chart.keys.x.length; // За последней точкой
+
+        for (let i = 0; i < chart.keys.x.length - 1; i++) {
+            if (point > chart.keys.x[i] && point < chart.keys.x[i + 1]) {
+                return i; // Между двумя точками
             }
         }
-        return found_index
-    }
+        return -2;
+    };
 
-    const extrapolation = (x, y, x1, y1) => {
-        setIsChanged(true)
-        return y1 + ((point - x1)/(x - x1)) * (y - y1)
-    }
+    const extrapolateOrInterpolate = (point, index) => {
+        let newPoint = null;
 
+        if (index === -1) {
+            // Экстраполяция перед первой точкой
+            const [x1, y1] = [chart.keys.x[0], chart.keys.y[0]];
+            const [x2, y2] = [chart.keys.x[1], chart.keys.y[1]];
+            newPoint = y1 + ((point - x1) * (y2 - y1)) / (x2 - x1);
+        } else if (index === chart.keys.x.length) {
+            // Экстраполяция за последней точкой
+            const [x1, y1] = [chart.keys.x[index - 2], chart.keys.y[index - 2]];
+            const [x2, y2] = [chart.keys.x[index - 1], chart.keys.y[index - 1]];
+            newPoint = y2 + ((point - x2) * (y2 - y1)) / (x2 - x1);
+        } else {
+            // Интерполяция между точками
+            const [x1, y1] = [chart.keys.x[index], chart.keys.y[index]];
+            const [x2, y2] = [chart.keys.x[index + 1], chart.keys.y[index + 1]];
+            newPoint = y1 + ((point - x1) * (y2 - y1)) / (x2 - x1);
+        }
+
+        setChart({ ...chart, keys: insert(point, newPoint, chart.keys.x, chart.keys.y) });
+        return newPoint
+    };
 
     const pointHandler = () => {
-        let index = findPoint(point);
-        if (index === chart.keys.x.length) {
-            let newPoint = extrapolation(chart.keys.x[index-1], chart.keys.y[index-1], chart.keys.x[index-2], chart.keys.y[index-2])
-            setChart({...chart, keys:insert(point, newPoint, chart.keys.x, chart.keys.y)})
-        }
-        else if (index === -1) {
-            let newPoint = extrapolation(chart.keys.x[index+2], chart.keys.y[index+2], chart.keys.x[index+1], chart.keys.y[index+1])
-            setChart({...chart, keys:insert(point, newPoint, chart.keys.x, chart.keys.y)})
-        }
-        else {
-            let newPoint = extrapolation(chart.keys.x[index+1], chart.keys.y[index+1], chart.keys.x[index], chart.keys.y[index])
-            setChart({...chart, keys:insert(point, newPoint, chart.keys.x, chart.keys.y)})
+        const parsedPoint = Number(point);
+        if (isNaN(parsedPoint)) {
+            //alert("Invalid input. Please enter a valid number.");
+            return;
         }
 
-    }
+        const index = findPointIndex(parsedPoint);
 
+        if (index >= 0 && chart.keys.x[index] === parsedPoint) {
+            return;
+        }
+
+        const newPoint = extrapolateOrInterpolate(parsedPoint, index);
+        setPoint("");
+    };
 
     if (store.isLoading) {
         return (
@@ -148,7 +169,7 @@ const ChartDetail = () => {
                                     placeholder='x_key'
                                     required
                                 />
-                                <label htmlFor="x_key">Enter y keys</label>
+                                <label htmlFor="x_key">Enter x keys</label>
                             </div>
 
                             <Button btnType="violet" onClick={pointHandler}>extrapolate</Button>
