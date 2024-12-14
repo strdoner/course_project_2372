@@ -2,7 +2,7 @@ import React from 'react'
 import ChartForm from './ChartForm'
 
 
-const LoadChartForm = ({formId, createChart}) => {
+const LoadChartForm = ({formId, createChart, updateChartsList, toastHandler}) => {
     
     return (
         <div>
@@ -14,7 +14,7 @@ const LoadChartForm = ({formId, createChart}) => {
                             <button type="button" className="btn-close close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div className="modal-body text-center">
-                            <ChartForm formId={formId} createChart={createChart}/>
+                            <ChartForm formId={formId} createChart={createChart} updateChartsList={updateChartsList} toastHandler={toastHandler}/>
                         </div>
                         
                     </div>

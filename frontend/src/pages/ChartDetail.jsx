@@ -95,7 +95,6 @@ const ChartDetail = () => {
     }
 
     const extrapolation = (x, y, x1, y1) => {
-
         setIsChanged(true)
         return y1 + ((point - x1)/(x - x1)) * (y - y1)
     }
@@ -138,12 +137,21 @@ const ChartDetail = () => {
                     <div className="card-body">
                         <h4 className="card-title">{chart.title}</h4>
                         <div className="card-text">
-                            <input
-                                type="number"
-                                onChange={(event) => setPoint(event.target.value)}
-                                value={point}
-                            />
-                            <Button onClick={pointHandler}>extrapolate</Button>
+                            <div className=' form-floating min-h'>
+                                <input
+                                    id='x_key'
+                                    className={`short__form_item form-control ${error.y_key !== "" ? "is-invalid" : ""}`}
+                                    onChange={(event) => setPoint(event.target.value)}
+                                    value={point}
+                                    type="number"
+
+                                    placeholder='x_key'
+                                    required
+                                />
+                                <label htmlFor="x_key">Enter y keys</label>
+                            </div>
+
+                            <Button btnType="violet" onClick={pointHandler}>extrapolate</Button>
                         </div>
                         <div className='d-flex'>
                             <Button btnType="warning" aria-hidden="true"  data-bs-toggle="modal" href="#form_details__modal">

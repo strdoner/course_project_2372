@@ -133,3 +133,32 @@ body {
 canvas {
     width: 100%;
 }
+
+.card-text {
+    margin: 20px 0;
+    display: flex;
+}
+
+.card-text input {
+    margin-right: 20px;
+}
+
+.card-text .form-floating {
+    width: max-content;
+}
+
+.form_delimiter {
+    margin: 20px 0;
+}
+.form_delimiter::before {
+    content: "";
+
+    border: 1px solid black;
+}
+
+.toast__excel {
+    position: fixed;
+    bottom: 50px;
+    right: 100px;
+    z-index: 9999999999999999;
+}
