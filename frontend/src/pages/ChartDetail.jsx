@@ -7,13 +7,14 @@ import { Context } from '../index'
 import Button from '../components/Button'
 
 const ChartDetail = () => {
-    const [keys, setKeys] = useState({x_key:"", y_key:""})
+    const [keys, setKeys] = useState({x_keys:[], y_keys:[]})
     const [error, setError] = useState({x_key:"", y_key:""})
     const params = useParams()
     const {store} = useContext(Context)
     const [chart, setChart] = useState({id:0, keys: {x:[], y:[]}})
     const [point, setPoint] = useState("")
     const [isChangesLoading, SetChangesLoading] = useState(false)
+    const [isChanged, setIsChanged] = useState(false)
 
     useEffect(() => {
         const response = store.getChart(params.id);
@@ -23,29 +24,54 @@ const ChartDetail = () => {
         })
     }, [store, params.id]);
 
-    const insert = (x, y, x_keys, y_keys, index=-1) => {
-        if (index === -1) {
-            index = findPoint(x);
+    useEffect(() => {
+        setKeys({x_keys: chart.keys.x, y_keys: chart.keys.y})
+    }, [chart])
 
-            if (index === -1) {
-                index++
-            }
+    const insert = (x, y, x_keys, y_keys) => {
+        x_keys.push(Number(x));
+        y_keys.push(Number(y));
 
-        }
-        if (x === x_keys[index]) {
-            y_keys[index] = y;
-        }
-        else {
-            x_keys.splice(index,0,x);
-            y_keys.splice(index,0,y);
-        }
+        return sortingKeys(x_keys, y_keys);
+    }
 
-        return {x:x_keys, y:y_keys};
+    const sortingKeys = (x_keys, y_keys) => {
+        let pairs = x_keys.map((value, index) => {
+            return [value, y_keys[index]];
+        });
+
+        // Сортировка по первому элементу каждой пары
+        pairs.sort((a, b) => a[0] - b[0]);
+
+        // Разделение обратно на массивы x и y
+        return {x:pairs.map(pair => pair[0]), y:pairs.map(pair => pair[1])}
+
     }
 
     const addNewKey = (e) => {
+        setError({x_key: "", y_key: ""})
         e.preventDefault()
-        setChart({...chart, keys:insert(keys.x_key, keys.y_key, chart.keys.x, chart.keys.y)})
+
+        setIsChanged(true)
+        if (keys.x_keys.length !== keys.y_keys.length) {
+            setError({y_key: "", x_key:"The number of keys doesn't match!"})
+            return
+        }
+        let x_keys = keys.x_keys.map(Number)
+        let y_keys = keys.y_keys.map(Number)
+
+        if (x_keys.some(isNaN)) {
+            setError({y_key: "", x_key: "Incorrect input in x keys"})
+            return
+        }
+        if (y_keys.some(isNaN)) {
+            setError({x_key: "", y_key: "Incorrect input in y keys"})
+            return
+        }
+        let tempKeys = sortingKeys(keys.x_keys.map(Number), keys.y_keys.map(Number))
+
+        setChart({...chart, keys:{...tempKeys}})
+
     }
 
     const editChart = () => {
@@ -53,6 +79,7 @@ const ChartDetail = () => {
         const response = store.editChart(chart.id, chart.keys)
         response.then((e) => {
             SetChangesLoading(false)
+            setIsChanged(false)
         })
     }
 
@@ -69,7 +96,7 @@ const ChartDetail = () => {
 
     const extrapolation = (x, y, x1, y1) => {
 
-        console.log(y1 + ((point - x1)/(x - x1)) * (y - y1))
+        setIsChanged(true)
         return y1 + ((point - x1)/(x - x1)) * (y - y1)
     }
 
@@ -78,15 +105,15 @@ const ChartDetail = () => {
         let index = findPoint(point);
         if (index === chart.keys.x.length) {
             let newPoint = extrapolation(chart.keys.x[index-1], chart.keys.y[index-1], chart.keys.x[index-2], chart.keys.y[index-2])
-            setChart({...chart, keys:insert(point, newPoint, chart.keys.x, chart.keys.y, index)})
+            setChart({...chart, keys:insert(point, newPoint, chart.keys.x, chart.keys.y)})
         }
         else if (index === -1) {
             let newPoint = extrapolation(chart.keys.x[index+2], chart.keys.y[index+2], chart.keys.x[index+1], chart.keys.y[index+1])
-            setChart({...chart, keys:insert(point, newPoint, chart.keys.x, chart.keys.y, index+1)})
+            setChart({...chart, keys:insert(point, newPoint, chart.keys.x, chart.keys.y)})
         }
         else {
             let newPoint = extrapolation(chart.keys.x[index+1], chart.keys.y[index+1], chart.keys.x[index], chart.keys.y[index])
-            setChart({...chart, keys:insert(point, newPoint, chart.keys.x, chart.keys.y, index+1)})
+            setChart({...chart, keys:insert(point, newPoint, chart.keys.x, chart.keys.y)})
         }
 
     }
@@ -129,6 +156,7 @@ const ChartDetail = () => {
                                 Save changes
                             </Button>
                         </div>
+                        {isChanged ? <p className="text-danger">The changes have not been saved!</p> : <></>}
                     </div>
                 </div>
             </div>
@@ -149,9 +177,9 @@ const ChartDetail = () => {
                                         <textarea
                                             id='y_min'
                                             className={`short__form_item form-control ${error.x_key !== "" ? "is-invalid" : ""}`} 
-                                            onChange={(event)=>{setKeys({...keys, x_key:Number(event.target.value)})}} 
-                                            value={chart.keys.x.join(`\n`)}
-
+                                            onChange={(event)=>{setKeys({...keys, x_keys:event.target.value.split(`\n`)})}}
+                                            value={keys.x_keys.join(`\n`)}
+                                            style={{minHeight:"300px"}}
 
                                             placeholder='x_key'
                                             required/>
@@ -163,13 +191,13 @@ const ChartDetail = () => {
                                         <textarea
                                             id='y_max' 
                                             className={`short__form_item form-control ${error.y_key !== "" ? "is-invalid" : ""}`}
-                                            onChange={(event)=>{setKeys({...keys, y_key:Number(event.target.value)})}}
-                                            value={chart.keys.y.join(`\n`)}
-
+                                            onChange={(event)=>{setKeys({...keys, y_keys:[...event.target.value.split(`\n`)]})}}
+                                            value={keys.y_keys.join(`\n`)}
+                                            style={{minHeight:"300px"}}
 
                                             placeholder='y_key'
                                             required/>
-                                        <label htmlFor="y_key">Enter y key</label>
+                                        <label htmlFor="y_key">Enter y keys</label>
                                         
                                     </div>
 
