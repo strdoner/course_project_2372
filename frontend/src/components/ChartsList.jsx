@@ -39,7 +39,7 @@ const ChartsList = () => {
     const deleteChart = (chart) => {
         setCharts(charts.filter((el) => el.id !== chart.id))
         store.deleteChart(chart.id)
-        .then((e) => {
+        .then(() => {
             
         })
     }
@@ -69,11 +69,11 @@ const ChartsList = () => {
                     <Toast.Body><h5>{toastText}</h5></Toast.Body>
                 </Toast>
                 <div className='row justify-content-center'>
-                    <div className='col-lg-4 col-md-6 col-12'>
+                    <div className='col-xl-4 col-md-6 col-12'>
                         <NewChartitem />
                     </div>
                     {charts.map(chart => 
-                        <div className='col-lg-4 col-md-6 col-12' key={chart.id}>
+                        <div className='col-xl-4 col-md-6 col-12' key={chart.id}>
                             <Chartitem chart={chart} deleteChart={deleteChart} key={chart.id}/>
                         </div>
                     )}

@@ -1,12 +1,14 @@
 import React, {useContext, useEffect, useState} from 'react'
-import { useParams } from 'react-router-dom'
+import {useNavigate, useParams} from 'react-router-dom'
 import {observer} from 'mobx-react-lite'
 import Navbar from '../components/Navbar'
 import Chart from '../components/Chart'
 import { Context } from '../index'
 import Button from '../components/Button'
+import {Breadcrumb} from "react-bootstrap";
 
 const ChartDetail = () => {
+    const navigate = useNavigate()
     const [keys, setKeys] = useState({x_keys:[], y_keys:[]})
     const [error, setError] = useState({x_key:"", y_key:""})
     const params = useParams()
@@ -15,7 +17,7 @@ const ChartDetail = () => {
     const [point, setPoint] = useState("")
     const [isChangesLoading, SetChangesLoading] = useState(false)
     const [isChanged, setIsChanged] = useState(false)
-
+    const [extrapolatedValue, setExtrapolatedValue] = useState({x:"", y:""})
     useEffect(() => {
         const response = store.getChart(params.id);
         response.then(function(data) {
@@ -77,7 +79,7 @@ const ChartDetail = () => {
     const editChart = () => {
         SetChangesLoading(true)
         const response = store.editChart(chart.id, chart.keys)
-        response.then((e) => {
+        response.then(() => {
             SetChangesLoading(false)
             setIsChanged(false)
         })
@@ -99,7 +101,7 @@ const ChartDetail = () => {
     };
 
     const extrapolateOrInterpolate = (point, index) => {
-        let newPoint = null;
+        let newPoint;
 
         if (index === -1) {
             // Экстраполяция перед первой точкой
@@ -117,7 +119,7 @@ const ChartDetail = () => {
             const [x2, y2] = [chart.keys.x[index + 1], chart.keys.y[index + 1]];
             newPoint = y1 + ((point - x1) * (y2 - y1)) / (x2 - x1);
         }
-
+        newPoint = Number(newPoint.toFixed(2))
         setChart({ ...chart, keys: insert(point, newPoint, chart.keys.x, chart.keys.y) });
         return newPoint
     };
@@ -132,11 +134,12 @@ const ChartDetail = () => {
         const index = findPointIndex(parsedPoint);
 
         if (index >= 0 && chart.keys.x[index] === parsedPoint) {
-            return;
+            setExtrapolatedValue({x:parsedPoint, y:chart.keys.x[index]})
+            return
         }
 
         const newPoint = extrapolateOrInterpolate(parsedPoint, index);
-        setPoint("");
+        setExtrapolatedValue({x:parsedPoint, y:newPoint})
     };
 
     if (store.isLoading) {
@@ -154,10 +157,16 @@ const ChartDetail = () => {
             <Navbar />
             <div className='container'>
                 <div className="card m-2">
+                    <Breadcrumb style={{padding:"10px"}}>
+                        <Breadcrumb.Item onClick={() => {navigate(`/`)}}>
+                            Dashboard
+                        </Breadcrumb.Item>
+                        <Breadcrumb.Item active>{chart.title}</Breadcrumb.Item>
+                    </Breadcrumb>
                     <Chart keys={chart.keys} index={chart.id} hidePoints={0}/>
                     <div className="card-body">
                         <h4 className="card-title">{chart.title}</h4>
-                        <div className="card-text">
+                        <div className="card-text align-content-center">
                             <div className=' form-floating min-h'>
                                 <input
                                     id='x_key'
@@ -169,10 +178,13 @@ const ChartDetail = () => {
                                     placeholder='x_key'
                                     required
                                 />
-                                <label htmlFor="x_key">Enter x keys</label>
+                                <label htmlFor="x_key">Enter x key</label>
                             </div>
 
                             <Button btnType="violet" onClick={pointHandler}>extrapolate</Button>
+                            <div className="d-flex">
+                                {extrapolatedValue.x !== "" ? <h5 style={{height:"min-content", alignSelf:"center", margin:"0 20px"}}>X: {extrapolatedValue.x} Y: {Number(extrapolatedValue.y.toFixed(2))}</h5>: <></>}
+                            </div>
                         </div>
                         <div className='d-flex'>
                             <Button btnType="warning" aria-hidden="true"  data-bs-toggle="modal" href="#form_details__modal">

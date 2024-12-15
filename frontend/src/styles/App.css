@@ -34,7 +34,7 @@ body {
     padding: 50px;
     background: #fff;
     min-width: 600px;
-    box-shadow: rgba(17, 17, 26, 0.1) 0px 4px 16px, rgba(17, 17, 26, 0.05) 0px 8px 32px;
+    box-shadow: rgba(17, 17, 26, 0.1) 0 4px 16px, rgba(17, 17, 26, 0.05) 0 8px 32px;
 
 }
 
@@ -69,7 +69,11 @@ body {
     padding: 50px 50px;
     min-height: 80vh;
     
-    
+}
+
+.nav_block {
+    max-width: 1500px;
+    margin: 0 auto;
 }
 
 .charts__item, .new_charts__item {
@@ -81,7 +85,7 @@ body {
     max-height: 400px;
     min-height: 300px;
     background-color: #fff;
-    box-shadow: rgba(17, 17, 26, 0.1) 0px 4px 16px, rgba(17, 17, 26, 0.05) 0px 8px 32px;
+    box-shadow: rgba(17, 17, 26, 0.1) 0 4px 16px, rgba(17, 17, 26, 0.05) 0 8px 32px;
     cursor: pointer;
 }
 
