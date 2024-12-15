@@ -8,7 +8,7 @@ const Navbar = () => {
     return (
         <div className='text-center p-4 border-bottom'>
             <div className='d-flex justify-content-between nav_block'>
-                <h5 style={{cursor:"pointer"}} onClick={navigate(`/`)}>
+                <h5 style={{cursor:"pointer"}} onClick={(e) => {navigate(`/`)}}>
                     Some dashboard name
                 </h5>
                 <div className='d-flex align-content-center'>

@@ -39,7 +39,7 @@ const ChartsList = () => {
     const deleteChart = (chart) => {
         setCharts(charts.filter((el) => el.id !== chart.id))
         store.deleteChart(chart.id)
-        .then(() => {
+        .then((e) => {
             
         })
     }

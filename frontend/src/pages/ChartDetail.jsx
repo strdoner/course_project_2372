@@ -158,7 +158,7 @@ const ChartDetail = () => {
             <div className='container'>
                 <div className="card m-2">
                     <Breadcrumb style={{padding:"10px"}}>
-                        <Breadcrumb.Item onClick={() => {navigate(`/`)}}>
+                        <Breadcrumb.Item onClick={(e) => {navigate(`/`)}}>
                             Dashboard
                         </Breadcrumb.Item>
                         <Breadcrumb.Item active>{chart.title}</Breadcrumb.Item>
