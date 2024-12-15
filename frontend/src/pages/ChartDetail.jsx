@@ -102,16 +102,38 @@ const ChartDetail = () => {
 
     const extrapolateOrInterpolate = (point, index) => {
         let newPoint;
-
+        
         if (index === -1) {
             // Экстраполяция перед первой точкой
+            const step = chart.keys.x[0] - chart.keys.x[1];
+            let currentX = chart.keys.x[0] + step;
+            while(point < currentX){
+                const [x1, y1] = [chart.keys.x[0], chart.keys.y[0]];
+                const [x2, y2] = [chart.keys.x[1], chart.keys.y[1]];
+                newPoint = y1 + ((currentX - x1) * (y2 - y1)) / (x2 - x1);
+                newPoint = Number(newPoint.toFixed(2))
+                setChart({ ...chart, keys: insert(currentX, newPoint, chart.keys.x, chart.keys.y) });
+                currentX += step;
+            }
             const [x1, y1] = [chart.keys.x[0], chart.keys.y[0]];
             const [x2, y2] = [chart.keys.x[1], chart.keys.y[1]];
             newPoint = y1 + ((point - x1) * (y2 - y1)) / (x2 - x1);
         } else if (index === chart.keys.x.length) {
             // Экстраполяция за последней точкой
-            const [x1, y1] = [chart.keys.x[index - 2], chart.keys.y[index - 2]];
-            const [x2, y2] = [chart.keys.x[index - 1], chart.keys.y[index - 1]];
+            let chLen = index;
+            const step = chart.keys.x[chLen-1] - chart.keys.x[chLen-2];
+            let currentX = chart.keys.x[chLen-1] + step;
+            while(point > currentX){
+                const [x1, y1] = [chart.keys.x[chLen - 2], chart.keys.y[chLen - 2]];
+                const [x2, y2] = [chart.keys.x[chLen - 1], chart.keys.y[chLen - 1]];
+                newPoint = y2 + ((currentX - x2) * (y2 - y1)) / (x2 - x1);
+                newPoint = Number(newPoint.toFixed(2))
+                setChart({ ...chart, keys: insert(currentX, newPoint, chart.keys.x, chart.keys.y) });
+                currentX += step;
+                chLen = chart.keys.x.length;
+            }
+            const [x1, y1] = [chart.keys.x[chLen - 2], chart.keys.y[chLen - 2]];
+            const [x2, y2] = [chart.keys.x[chLen - 1], chart.keys.y[chLen - 1]];
             newPoint = y2 + ((point - x2) * (y2 - y1)) / (x2 - x1);
         } else {
             // Интерполяция между точками
