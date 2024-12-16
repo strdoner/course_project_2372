@@ -6,6 +6,7 @@ import Chart from '../components/Chart'
 import { Context } from '../index'
 import Button from '../components/Button'
 import {Breadcrumb} from "react-bootstrap";
+import Modal from 'react-bootstrap/Modal';
 
 const ChartDetail = () => {
     const navigate = useNavigate()
@@ -18,6 +19,10 @@ const ChartDetail = () => {
     const [isChangesLoading, SetChangesLoading] = useState(false)
     const [isChanged, setIsChanged] = useState(false)
     const [extrapolatedValue, setExtrapolatedValue] = useState({x:"", y:""})
+    const [showWarning, setShowWarning] = useState(false);
+    const handleClose = () => setShowWarning(false);
+    const handleShow = () => setShowWarning(true);
+
     useEffect(() => {
         const response = store.getChart(params.id);
         response.then(function(data) {
@@ -76,13 +81,17 @@ const ChartDetail = () => {
 
     }
 
-    const editChart = () => {
+    const editChart = (isWarning=false) => {
         SetChangesLoading(true)
         const response = store.editChart(chart.id, chart.keys)
         response.then(() => {
             SetChangesLoading(false)
             setIsChanged(false)
+            if (isWarning) {
+                navigate("/")
+            }
         })
+    
     }
 
     const findPointIndex = (point) => {
@@ -149,7 +158,6 @@ const ChartDetail = () => {
     const pointHandler = () => {
         const parsedPoint = Number(point);
         if (isNaN(parsedPoint)) {
-            //alert("Invalid input. Please enter a valid number.");
             return;
         }
 
@@ -159,15 +167,25 @@ const ChartDetail = () => {
             setExtrapolatedValue({x:parsedPoint, y:chart.keys.x[index]})
             return
         }
-
+        setIsChanged(true)
         const newPoint = extrapolateOrInterpolate(parsedPoint, index);
         setExtrapolatedValue({x:parsedPoint, y:newPoint})
     };
 
+    const navigateHandler = () => {
+        if (isChanged) {
+            setShowWarning(true)
+            return
+        }
+        else {
+            navigate('/')
+        }
+    }
+
     if (store.isLoading) {
         return (
             <>
-                <Navbar />
+                <Navbar/>
                 <div className='charts' style={{display:"flex", alignItems:"center", justifyContent:"center"}}>
                     <div className="spinner-grow text-muted"></div>
                 </div>
@@ -176,11 +194,26 @@ const ChartDetail = () => {
     }
     return (
         <>
-            <Navbar />
+            <Modal size="lg" aria-labelledby="contained-modal-title-vcenter" centered show={showWarning} onHide={handleClose} animation={false}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Warning</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>You have unsaved changes!</Modal.Body>
+                <Modal.Footer>
+                <Button btnType="danger" onClick={(e) => {navigate("/")}}>
+                    Close anyway
+                </Button>
+                <Button btnType="success" onClick={(e) => {handleClose(); editChart(true); navigateHandler()}}>
+                    Save Changes
+                </Button>
+                </Modal.Footer>
+            </Modal>
+    
+            <Navbar navigateHandler={navigateHandler} />
             <div className='container'>
                 <div className="card m-2">
                     <Breadcrumb style={{padding:"10px"}}>
-                        <Breadcrumb.Item onClick={(e) => {navigate(`/`)}}>
+                        <Breadcrumb.Item onClick={(e) => {navigateHandler()}}>
                             Dashboard
                         </Breadcrumb.Item>
                         <Breadcrumb.Item active>{chart.title}</Breadcrumb.Item>

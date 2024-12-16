@@ -20,7 +20,7 @@ body {
 .header {
     position: absolute;
     top: 0;
-    
+
 }
 
 .main {
@@ -161,7 +161,7 @@ canvas {
 }
 
 .form_delimiter .line {
-    border: 1px solid #acabab;
+    border-top: 1px solid #acabab;
     height: 1px;
     width: 45%!important;
 }

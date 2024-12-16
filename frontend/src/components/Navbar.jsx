@@ -3,13 +3,13 @@ import { Context } from '../index.js'
 import {useNavigate} from "react-router-dom";
 import Logo from './Logo.jsx'
 
-const Navbar = () => {
+const Navbar = ({navigateHandler, ...props}) => {
     const {store} = useContext(Context)
     const navigate = useNavigate()
     return (
         <div className='text-center p-4 border-bottom'>
             <div className='d-flex justify-content-between nav_block'>
-                <h5 style={{cursor:"pointer"}} onClick={(e) => {navigate(`/`)}}>
+                <h5 style={{cursor:"pointer"}} onClick={(e) => {navigateHandler !== undefined ? navigateHandler() : navigate(`/`)}}>
                     <Logo />
                     /Dashboard
                 </h5>
