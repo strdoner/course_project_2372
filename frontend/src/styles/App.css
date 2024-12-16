@@ -20,6 +20,7 @@ body {
 .header {
     position: absolute;
     top: 0;
+    
 }
 
 .main {
@@ -186,4 +187,9 @@ canvas {
 
 .page__404 span {
     font-size: 70px;
+}
+
+.logo {
+    font-size: 30px;
+    font-weight: bold;
 }

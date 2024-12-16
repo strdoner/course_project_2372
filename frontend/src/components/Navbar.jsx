@@ -1,6 +1,7 @@
 import React, { useContext } from 'react'
 import { Context } from '../index.js'
 import {useNavigate} from "react-router-dom";
+import Logo from './Logo.jsx'
 
 const Navbar = () => {
     const {store} = useContext(Context)
@@ -9,8 +10,10 @@ const Navbar = () => {
         <div className='text-center p-4 border-bottom'>
             <div className='d-flex justify-content-between nav_block'>
                 <h5 style={{cursor:"pointer"}} onClick={(e) => {navigate(`/`)}}>
-                    Some dashboard name
+                    <Logo />
+                    /Dashboard
                 </h5>
+                
                 <div className='d-flex align-content-center'>
                     <h5 className='nav__username'>
                         {store.username}

@@ -46,7 +46,7 @@ const ChartsList = () => {
 
     const toastHandler = (type, text="") => {
         if (type === "FAILURE") {
-            setToastText(text === "" ? "There was an unexpected error!" : text)
+            setToastText(text === "" ? "An error occurred while processing a file!" : text)
             setFailedToastShow(true)
         }
         else {

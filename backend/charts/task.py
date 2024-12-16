@@ -46,7 +46,12 @@ class CoordinateMapping:
     error: str = None
 
     def to_json(self) -> str:
+        
+        self.mapping = sorted(self.mapping, key=lambda x: x[0])
+
         x_list, y_list = zip(*self.mapping) if self.mapping else ([], [])
+        if len(x_list) != len(y_list) or len(x_list) == 0:
+            return None 
         format = {
             "title" : self.sheet_name,
             "keys" : {
