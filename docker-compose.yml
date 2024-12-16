@@ -26,6 +26,7 @@ services:
     restart: unless-stopped
     volumes:
       - backend_media:/app/backend/media
+    command: gunicorn backend.wsgi:application --bind 0.0.0.0:8000 -w 2
     ports:
       - '8000:8000'
     depends_on:

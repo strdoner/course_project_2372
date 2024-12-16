@@ -125,6 +125,9 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+DJANGO_SUPERUSER_USERNAME="admin"
+DJANGO_SUPERUSER_EMAIL="admin@domain.com"
+DJANGO_SUPERUSER_PASSWORD="admin"
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
