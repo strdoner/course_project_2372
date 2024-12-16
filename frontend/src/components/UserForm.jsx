@@ -27,10 +27,11 @@ function LoginForm () {
     const [username, setUsername] = useState("")
     const [password, setPassword] = useState("")
     const [error, setError] = useState("")
-
+    const [isAuthLoading, setIsAuthLoading] = useState(false)
     
     
     const onLoginFormSubmit = (e) => {
+        setIsAuthLoading(true)
         e.preventDefault();
         if (!isValidLoginForm()) {
             return
@@ -38,6 +39,7 @@ function LoginForm () {
         
         const response = store.loginUser(username, password)
         response.then(function(er) {
+            setIsAuthLoading(false)
             if (er !== undefined) {
                 setError("Incorrect username or password")
             }
@@ -78,8 +80,8 @@ function LoginForm () {
                 type="password" 
                 placeholder='Enter Password'
                 required/>
-            <div className='text-danger text-center'>{error}</div>
-            <Button btnType={"violet"} type="submit" isLoading={store.isLoading ? 1 : 0}>Login</Button>        
+            <div className='text-danger text-center m-2'>{error}</div>
+            <Button btnType={"violet"} type="submit" isloading={isAuthLoading ? 1 : 0}>Login</Button>        
         </form>
     )
 }
@@ -90,8 +92,9 @@ function RegisterForm(){
     const initialState = {username:'', email:'', password:'', password2:''};
     const [form, setForm] = useState({username:'', email:'', password:'', password2:''})
     const [error, setError] = useState(initialState)
-
+    const [isRegisterLoading, setIsRegisterLoading] = useState(false)
     const onRegisterFormSubmit = (e) => {
+        setIsRegisterLoading(true)
         e.preventDefault();
         
         if (!isValidRegisterForm()) {
@@ -100,7 +103,7 @@ function RegisterForm(){
 
         const response = store.registerUser(form.username, form.email, form.password, form.password2)
         response.then(function(er) {
-            console.log(er)
+            setIsRegisterLoading(false)
             if (er !== undefined) {
                 if (er.username !== undefined) {
                     setError({...error, username:er.username})
@@ -167,9 +170,9 @@ function RegisterForm(){
                 required
                 onChange={e => setForm({...form, password2: e.target.value})}
             />
-            <div className='text-danger text-center'>{error.password2}</div>
+            <div className='text-danger text-center m-2'>{error.password2}</div>
 
-            <Button btnType={"violet"} onClick={e => setError(initialState)} isloading={store.isLoading ? 1 : 0}>Register</Button>   
+            <Button btnType={"violet"} onClick={e => setError(initialState)} isloading={isRegisterLoading ? 1 : 0}>Register</Button>   
         </form>
     )
 }

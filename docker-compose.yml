@@ -24,6 +24,8 @@ services:
     image: backend:custom
     build: ./backend
     restart: unless-stopped
+    volumes:
+      - backend_media:/app/backend/media
     ports:
       - '8000:8000'
     depends_on:
@@ -39,6 +41,8 @@ services:
     container_name: celery
     build: ./backend
     command: celery -A backend worker -l info
+    volumes:
+      - backend_media:/app/backend/media
     environment:
       - CELERY_BROKER_URL=redis://redis:6379/0
       - CELERY_RESULT_BACKEND=redis://redis:6379/0
@@ -47,4 +51,5 @@ services:
 
 volumes:
   postgres:
+  backend_media:
       

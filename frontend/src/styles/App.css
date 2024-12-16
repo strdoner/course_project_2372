@@ -4,6 +4,10 @@
     box-sizing: border-box;
 }
 
+html, body {
+    min-height: 100%!important;
+}
+
 body {
     background: #ecf1f7!important;
 }
@@ -154,10 +158,16 @@ canvas {
 .form_delimiter {
     margin: 20px 0;
 }
-.form_delimiter::before {
-    content: "";
 
-    border: 1px solid black;
+.form_delimiter .line {
+    border: 1px solid #acabab;
+    height: 1px;
+    width: 45%!important;
+}
+
+.form_delimiter h5 {
+    height: min-content;
+    color: #757575;
 }
 
 .toast__excel {
@@ -165,4 +175,15 @@ canvas {
     bottom: 50px;
     right: 100px;
     z-index: 9999999999999999;
+}
+
+.page__404 {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.page__404 span {
+    font-size: 70px;
 }

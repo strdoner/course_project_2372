@@ -1,10 +1,8 @@
-import React, { useContext } from 'react'
-import { Context } from '..'
+import React from 'react'
 import {observer} from 'mobx-react-lite'
 
 
 const Button = ({children, btnType, ...props}) => {
-    const {store} = useContext(Context)
     
     if (props.isloading) {
         return (

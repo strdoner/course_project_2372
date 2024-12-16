@@ -7,11 +7,11 @@ import Dashboard from './pages/Dashboard';
 import Login from './pages/Login'
 import Register from './pages/Register'
 import ChartDetail from './pages/ChartDetail'
+import Page404 from './pages/404page.jsx';
 import React, {useContext, useEffect} from 'react';
 import { Context } from './index.js';
 import { observer } from 'mobx-react-lite'
 import PrivateRoute from './components/PrivateRoute.jsx';
-
 
 
 function App() {
@@ -32,7 +32,7 @@ function App() {
           <Route path='/charts/:id' element={<ChartDetail />} />
         </Route>
 
-        <Route path="*" element={<div>404... not found </div>} />
+        <Route path="*" element={<Page404 />} />
       </Routes>
 
     </BrowserRouter>

@@ -2,7 +2,6 @@ import React, { useContext} from 'react'
 import { useState } from 'react'
 import Button from './Button'
 import { Context } from '../index.js'
-import {Toast} from 'bootstrap/dist/js/bootstrap'
 const ChartForm = ({formId, createChart, updateChartsList, toastHandler}) => {
     const [error, setError] = useState({title:"", range_x:"", range_y:"", keys:"", file:""})
     const [form, setForm] = useState({title:"", min_x:0, min_y:0, max_x:0, max_y:0})
@@ -165,7 +164,7 @@ const ChartForm = ({formId, createChart, updateChartsList, toastHandler}) => {
 
                         <input
                             id='y_max'
-                            className={`short__form_item form-control ${error.range_y != "" ? "is-invalid" : ""}`}
+                            className={`short__form_item form-control ${error.range_y !== "" ? "is-invalid" : ""}`}
                             onChange={(event)=>{setForm({...form, max_y:Number(event.target.value)})}}
                             type="number"
                             step="0.01"
@@ -208,7 +207,11 @@ const ChartForm = ({formId, createChart, updateChartsList, toastHandler}) => {
 
                     </div>
                 </div>
-                <h5 className="form_delimiter">or</h5>
+                <div className='form_delimiter d-flex justify-content-around align-items-center'>
+                    <div className='line col-5'></div>
+                    <h5>or</h5>
+                    <div className='line col-5'></div>
+                </div>
 
                 <div className="input-group">
                     <input
