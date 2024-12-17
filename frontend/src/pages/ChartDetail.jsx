@@ -256,7 +256,7 @@ const ChartDetail = () => {
                             </svg>
                             </Button>
                             
-                            <Button onClick={editChart} btnType="success" style={{marginLeft:"15px"}} isloading={isChangesLoading ? 1 : 0}>
+                            <Button onClick={(e) => {editChart(false)}} btnType="success" style={{marginLeft:"15px"}} isloading={isChangesLoading ? 1 : 0}>
                                 Save changes
                             </Button>
                         </div>
