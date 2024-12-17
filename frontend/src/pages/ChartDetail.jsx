@@ -35,20 +35,22 @@ const ChartDetail = () => {
         setKeys({x_keys: chart.keys.x, y_keys: chart.keys.y})
     }, [chart])
 
-    const insert = (x, y, x_keys, y_keys) => {
+    const insert = (x, y, x_keys, y_keys, flag = true) => {
         x_keys.push(Number(x));
         y_keys.push(Number(y));
-
-        return sortingKeys(x_keys, y_keys);
+        
+        return sortingKeys(x_keys, y_keys, flag);
     }
 
-    const sortingKeys = (x_keys, y_keys) => {
+    const sortingKeys = (x_keys, y_keys, flag) => {
         let pairs = x_keys.map((value, index) => {
             return [value, y_keys[index]];
         });
 
-        // Сортировка по первому элементу каждой пары
-        pairs.sort((a, b) => a[0] - b[0]);
+        if(flag === true){
+            // Сортировка по первому элементу каждой пары
+            pairs.sort((a, b) => a[0] - b[0]);
+        }
 
         // Разделение обратно на массивы x и y
         return {x:pairs.map(pair => pair[0]), y:pairs.map(pair => pair[1])}
@@ -114,15 +116,18 @@ const ChartDetail = () => {
         
         if (index === -1) {
             // Экстраполяция перед первой точкой
-            const step = chart.keys.x[0] - chart.keys.x[1];
+            let step = chart.keys.x[0] - chart.keys.x[1];
+            step = Number(step.toFixed(4));
             let currentX = chart.keys.x[0] + step;
+            currentX = Number(currentX.toFixed(4));
             while(point < currentX){
                 const [x1, y1] = [chart.keys.x[0], chart.keys.y[0]];
                 const [x2, y2] = [chart.keys.x[1], chart.keys.y[1]];
                 newPoint = y1 + ((currentX - x1) * (y2 - y1)) / (x2 - x1);
-                newPoint = Number(newPoint.toFixed(2))
-                setChart({ ...chart, keys: insert(currentX, newPoint, chart.keys.x, chart.keys.y) });
+                newPoint = Number(newPoint.toFixed(4));
+                setChart({ ...chart, keys: insert(currentX, newPoint, chart.keys.x, chart.keys.y, false) });
                 currentX += step;
+                currentX = Number(currentX.toFixed(4));
             }
             const [x1, y1] = [chart.keys.x[0], chart.keys.y[0]];
             const [x2, y2] = [chart.keys.x[1], chart.keys.y[1]];
@@ -130,16 +135,19 @@ const ChartDetail = () => {
         } else if (index === chart.keys.x.length) {
             // Экстраполяция за последней точкой
             let chLen = index;
-            const step = chart.keys.x[chLen-1] - chart.keys.x[chLen-2];
+            let step = chart.keys.x[chLen-1] - chart.keys.x[chLen-2];
+            step = Number(step.toFixed(4));
             let currentX = chart.keys.x[chLen-1] + step;
+            currentX = Number(currentX.toFixed(4));
             while(point > currentX){
                 const [x1, y1] = [chart.keys.x[chLen - 2], chart.keys.y[chLen - 2]];
                 const [x2, y2] = [chart.keys.x[chLen - 1], chart.keys.y[chLen - 1]];
                 newPoint = y2 + ((currentX - x2) * (y2 - y1)) / (x2 - x1);
-                newPoint = Number(newPoint.toFixed(2))
-                setChart({ ...chart, keys: insert(currentX, newPoint, chart.keys.x, chart.keys.y) });
+                newPoint = Number(newPoint.toFixed(4));
+                setChart({ ...chart, keys: insert(currentX, newPoint, chart.keys.x, chart.keys.y, false) });
                 currentX += step;
                 chLen = chart.keys.x.length;
+                currentX = Number(currentX.toFixed(4));
             }
             const [x1, y1] = [chart.keys.x[chLen - 2], chart.keys.y[chLen - 2]];
             const [x2, y2] = [chart.keys.x[chLen - 1], chart.keys.y[chLen - 1]];
@@ -150,7 +158,7 @@ const ChartDetail = () => {
             const [x2, y2] = [chart.keys.x[index + 1], chart.keys.y[index + 1]];
             newPoint = y1 + ((point - x1) * (y2 - y1)) / (x2 - x1);
         }
-        newPoint = Number(newPoint.toFixed(2))
+        newPoint = Number(newPoint.toFixed(4))
         setChart({ ...chart, keys: insert(point, newPoint, chart.keys.x, chart.keys.y) });
         return newPoint
     };
@@ -238,7 +246,7 @@ const ChartDetail = () => {
 
                             <Button btnType="violet" onClick={pointHandler}>extrapolate</Button>
                             <div className="d-flex">
-                                {extrapolatedValue.x !== "" ? <h5 style={{height:"min-content", alignSelf:"center", margin:"0 20px"}}>X: {extrapolatedValue.x} Y: {Number(extrapolatedValue.y.toFixed(2))}</h5>: <></>}
+                                {extrapolatedValue.x !== "" ? <h5 style={{height:"min-content", alignSelf:"center", margin:"0 20px"}}>X: {extrapolatedValue.x} Y: {Number(extrapolatedValue.y.toFixed(4))}</h5>: <></>}
                             </div>
                         </div>
                         <div className='d-flex'>
