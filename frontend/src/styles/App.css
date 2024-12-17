@@ -1,0 +1,195 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    min-height: 100%!important;
+}
+
+body {
+    background: #ecf1f7!important;
+}
+
+.text__help {
+    color: #757575;
+    padding: 20px 0 0 0;
+}
+
+.header {
+    position: absolute;
+    top: 0;
+
+}
+
+.main {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+
+    
+}
+
+.login__block {
+    
+    border-radius: 10px;
+    padding: 50px;
+    background: #fff;
+    min-width: 600px;
+    box-shadow: rgba(17, 17, 26, 0.1) 0 4px 16px, rgba(17, 17, 26, 0.05) 0 8px 32px;
+
+}
+
+.btn-violet {
+    background-color: #474853!important;
+    color: #fff!important;
+}
+
+.btn-outline-violet {
+    border: 1px solid #474853!important;
+}
+
+.login__block>form {
+    display: flex;
+    flex-flow: column;
+}
+
+.login__block>form>input, .chart__form input {
+    margin: 0 0 40px 0;
+    width: 100%;
+    height: 45px;
+    border-radius: 5px;
+    padding: 10px;
+    font-size: 20px;
+    border: 1px solid #acabab;
+}
+
+.charts {
+    max-width: 1500px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 50px 50px;
+    min-height: 80vh;
+    
+}
+
+.nav_block {
+    max-width: 1500px;
+    margin: 0 auto;
+}
+
+.charts__item, .new_charts__item {
+    /* border: 1px solid #59A9FF; */
+    border-radius: 20px;
+    padding: 30px;
+    margin: 15px 10px;
+    width: 100%!important;
+    max-height: 400px;
+    min-height: 300px;
+    background-color: #fff;
+    box-shadow: rgba(17, 17, 26, 0.1) 0 4px 16px, rgba(17, 17, 26, 0.05) 0 8px 32px;
+    cursor: pointer;
+}
+
+.new_charts__item {
+    cursor: pointer;
+    color: #d2d6db;
+}
+
+.charts__item__footer {
+    width: 100%;
+    display: grid;
+    justify-content: end;
+}
+
+.chart__item__btn {
+    cursor: pointer;
+}
+
+.chart {
+    width: 100%;
+    min-height: 100px;
+}
+
+.add_new_chart svg {
+    width: 125px;
+    height: 125px;
+    color: #d2d6db;
+}
+
+
+.chart__form {
+    padding: 20px;
+    display: flex;
+    flex-flow: column;
+}
+
+.nav__username {
+    margin-right: 10px;
+}
+
+.short__form_item {
+    width: 150px!important;
+}
+
+.min-h {
+    height: min-content;
+}
+
+canvas {
+    width: 100%;
+}
+
+.card-text {
+    margin: 20px 0;
+    display: flex;
+}
+
+.card-text input {
+    margin-right: 20px;
+}
+
+.card-text .form-floating {
+    width: max-content;
+}
+
+.form_delimiter {
+    margin: 20px 0;
+}
+
+.form_delimiter .line {
+    border-top: 1px solid #acabab;
+    height: 1px;
+    width: 45%!important;
+}
+
+.form_delimiter h5 {
+    height: min-content;
+    color: #757575;
+}
+
+.toast__excel {
+    position: fixed;
+    bottom: 50px;
+    right: 100px;
+    z-index: 9999999999999999;
+}
+
+.page__404 {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.page__404 span {
+    font-size: 70px;
+}
+
+.logo {
+    font-size: 30px;
+    font-weight: bold;
+}

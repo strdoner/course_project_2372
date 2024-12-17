@@ -1,0 +1,67 @@
+services:
+  postgres:
+    container_name: postgres
+    image: postgres:17
+    ports:
+      - '5432:5432'
+    volumes:
+      - postgres:/var/lib/postgresql/data/
+    env_file:
+      - ./backend/.env
+    restart: unless-stopped
+
+  pgadmin:
+    image: 'docker.io/dpage/pgadmin4:latest'
+    environment:
+      PGADMIN_DEFAULT_EMAIL: "admin@domain.com"
+      PGADMIN_DEFAULT_PASSWORD: "admin"
+    ports:
+      - 15080:80
+    volumes:
+      - pg_admin:/var/lib/pgadmin/    
+
+  frontend:
+    container_name: frontend
+    image: frontend:custom
+    build: ./frontend
+    ports:
+      - '3000:3000'
+    depends_on:
+      - backend 
+
+  backend:
+    container_name: backend
+    image: backend:custom
+    build: ./backend
+    restart: unless-stopped
+    volumes:
+      - backend_media:/app/backend/media
+    command: gunicorn backend.wsgi:application --bind 0.0.0.0:8000 -w 2
+    ports:
+      - '8000:8000'
+    depends_on:
+      - postgres
+    
+  
+  redis:
+    container_name: redis
+    image: redis:7
+    ports:
+      - '6379:6379'
+  
+  celery:
+    container_name: celery
+    build: ./backend
+    command: celery -A backend worker -l info
+    volumes:
+      - backend_media:/app/backend/media
+    environment:
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - CELERY_RESULT_BACKEND=redis://redis:6379/0
+    depends_on:
+      - redis
+
+volumes:
+  postgres:
+  backend_media:
+  pg_admin:
