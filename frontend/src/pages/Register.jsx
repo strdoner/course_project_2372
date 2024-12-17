@@ -2,13 +2,14 @@ import React from 'react'
 import UserForm from '../components/UserForm'
 import { Link } from 'react-router-dom'
 import {observer} from 'mobx-react-lite'
+import Logo from '../components/Logo'
 
 const Register = () => {
     return (
         
         <div className='main d-flex justify-content-center align-items-center'>
             <div className='header w-100 d-flex justify-content-between p-4 container'>
-                <h1>Griph</h1>
+                <h1><Logo /></h1>
                 <div className='btn-group'>
                     <Link to="/login" className="btn btn-outline-violet" style={{padding:'12px', height:'min-content'}}><h5 className='m-0' style={{height:'min-content'}}>Log In</h5></Link>
                     <Link to="/register" className="btn btn-violet" style={{padding:'12px', height:'min-content'}}><h5 className='m-0' style={{height:'min-content'}}>Sign Up</h5></Link>

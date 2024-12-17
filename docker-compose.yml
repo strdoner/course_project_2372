@@ -10,6 +10,16 @@ services:
       - ./postgres/.env
     restart: unless-stopped
 
+  pgadmin:
+    image: 'docker.io/dpage/pgadmin4:latest'
+    environment:
+      PGADMIN_DEFAULT_EMAIL: "admin@domain.com"
+      PGADMIN_DEFAULT_PASSWORD: "admin"
+    ports:
+      - 15080:80
+    volumes:
+      - pg_admin:/var/lib/pgadmin/
+
   frontend:
     container_name: frontend
     image: frontend:custom
@@ -53,4 +63,5 @@ services:
 volumes:
   postgres:
   backend_media:
+  pg_admin:
       

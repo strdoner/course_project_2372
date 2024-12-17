@@ -11,7 +11,7 @@ const Login = () => {
             <div className='header w-100 d-flex justify-content-between p-4 container'>
                 <h1><Logo /></h1>
                 <div className='btn-group'>
-                <Link to="/login" className="btn btn-violet" style={{padding:'12px', height:'min-content'}}><h5 className='m-0' style={{height:'min-content'}}>Log In</h5></Link>
+                    <Link to="/login" className="btn btn-violet" style={{padding:'12px', height:'min-content'}}><h5 className='m-0' style={{height:'min-content'}}>Log In</h5></Link>
                     <Link to="/register" className="btn btn-outline-violet" style={{padding:'12px', height:'min-content'}}><h5 className='m-0' style={{height:'min-content'}}>Sign Up</h5></Link>
                 </div>
             </div>
